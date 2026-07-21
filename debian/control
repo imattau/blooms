@@ -1,0 +1,21 @@
+Source: blooms-in-gnome
+Section: utils
+Priority: optional
+Maintainer: Blooms in Gnome contributors
+Build-Depends: debhelper-compat (= 13), dh-sequence-python3, python3-all,
+ python3-setuptools, python3-gi, python3-requests, python3-cryptography,
+ python3-nautilus, fuse3, libfuse2
+Standards-Version: 4.6.2
+Homepage: https://github.com/anomalyco/blooms
+
+Package: blooms-in-gnome
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends},
+ python3-gi (>= 3.48), python3-requests (>= 2.31),
+ python3-cryptography (>= 41.0), python3-nautilus,
+ fuse3, libfuse2
+Recommends: python3-nautilus
+Description: Nostr Blossom FUSE mount with tray icon
+ Mount your Nostr Blossom server as a FUSE directory with a
+ system tray icon. Encrypts files with NIP-44 (ECDH + ChaCha20-Poly1305).
+ Works in any file manager.

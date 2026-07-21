@@ -1,0 +1,24 @@
+#!/usr/bin/make -f
+
+export DH_VIRTUALENV_INSTALL_ROOT=/usr/lib/blooms-in-gnome
+
+%:
+	dh $@ --with python3
+
+override_dh_auto_install:
+	dh_auto_install
+
+override_dh_install:
+	dh_install
+	# Install systemd user service
+	install -D -m 644 blooms.service \
+		$(CURDIR)/debian/blooms-in-gnome/usr/lib/systemd/user/blooms.service
+	# Install desktop autostart
+	install -D -m 644 blooms-in-gnome.desktop \
+		$(CURDIR)/debian/blooms-in-gnome/etc/xdg/autostart/blooms-in-gnome.desktop
+	# Install locale files
+	for po_dir in locale/*/LC_MESSAGES; do \
+		lang=$$(basename $$(dirname $$po_dir)); \
+		install -D -m 644 $$po_dir/blooms-in-gnome.mo \
+			$(CURDIR)/debian/blooms-in-gnome/usr/share/locale/$$lang/LC_MESSAGES/blooms-in-gnome.mo; \
+	done

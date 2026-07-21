@@ -1,0 +1,110 @@
+name: Build packages
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  deb:
+    name: Build .deb
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential debhelper python3-all \
+            python3-setuptools python3-gi python3-requests \
+            python3-cryptography fuse3 libfuse2
+
+      - name: Install Python build deps
+        run: |
+          pip install --break-system-packages coincurve cairosvg pystray \
+            pillow keyring websocket-client fusepy
+
+      - name: Build .deb
+        run: |
+          dpkg-buildpackage -us -uc -b
+          mkdir -p artifacts
+          cp ../blooms-in-gnome_*.deb artifacts/
+
+      - name: Upload .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: blooms-in-gnome-deb
+          path: artifacts/*.deb
+
+  rpm:
+    name: Build .rpm
+    runs-on: fedora-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          dnf install -y rpm-build python3-devel python3-setuptools \
+            python3-gobject python3-requests python3-cryptography \
+            fuse fuse-devel fuse3 fuse3-devel
+
+      - name: Build Python deps
+        run: |
+          pip3 install coincurve cairosvg pystray pillow keyring \
+            websocket-client fusepy
+
+      - name: Build .rpm
+        run: |
+          mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+          tar czf ~/rpmbuild/SOURCES/blooms-in-gnome.tar.gz \
+            --transform "s|^|blooms-in-gnome-0.1.0/|" \
+            --exclude=.git --exclude=__pycache__ --exclude='*.pyc' .
+          cp blooms.spec ~/rpmbuild/SPECS/
+          rpmbuild -ba ~/rpmbuild/SPECS/blooms.spec
+          mkdir -p artifacts
+          cp ~/rpmbuild/RPMS/noarch/blooms-in-gnome-*.rpm artifacts/
+
+      - name: Upload .rpm
+        uses: actions/upload-artifact@v4
+        with:
+          name: blooms-in-gnome-rpm
+          path: artifacts/*.rpm
+
+  flatpak:
+    name: Build Flatpak
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub/flatpak-builder:latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add Flathub remote
+        run: |
+          flatpak remote-add --user --if-not-exists flathub \
+            https://flathub.org/repo/flathub.flatpakrepo
+
+      - name: Install GNOME runtime
+        run: |
+          flatpak install --user --noninteractive \
+            org.gnome.Platform//46 org.gnome.Sdk//46
+
+      - name: Build Flatpak
+        run: |
+          flatpak-builder --force-clean --user \
+            --install-deps-from=flathub \
+            build-dir flatpak/io.github.anomalyco.blooms.yml
+
+      - name: Export Flatpak
+        run: |
+          flatpak build-export repo build-dir
+          mkdir -p artifacts
+          flatpak build-bundle repo \
+            artifacts/blooms-in-gnome.flatpak \
+            io.github.anomalyco.blooms
+
+      - name: Upload Flatpak
+        uses: actions/upload-artifact@v4
+        with:
+          name: blooms-in-gnome-flatpak
+          path: artifacts/*.flatpak

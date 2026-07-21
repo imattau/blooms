@@ -1,0 +1,50 @@
+id: io.github.anomalyco.blooms
+runtime: org.gnome.Platform
+runtime-version: "46"
+sdk: org.gnome.Sdk
+command: blooms-tray
+
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=x11
+  - --socket=wayland
+  - --socket=session-bus
+  - --device=dri
+  - --filesystem=host
+  - --filesystem=/tmp
+  - --talk-name=org.freedesktop.secrets
+  - --talk-name=org.kde.kwalletd5
+  - --talk-name=org.kde.kwalletd6
+  - --env=BLOOMS_MOUNT=/run/user/$UID/blooms
+
+modules:
+  - name: python3-deps
+    buildsystem: simple
+    build-commands:
+      - pip3 install --prefix=${FLATPAK_DEST} --no-build-isolation
+        coincurve cairosvg pystray pillow keyring websocket-client
+    sources:
+      - type: pip
+        packages:
+          - coincurve
+          - cairosvg
+          - pystray
+          - pillow
+          - keyring
+          - websocket-client
+
+  - name: blooms-in-gnome
+    buildsystem: simple
+    build-commands:
+      - pip3 install --prefix=${FLATPAK_DEST} --no-deps .
+      - install -D -m 644 blooms-in-gnome.desktop
+        ${FLATPAK_DEST}/share/applications/io.github.anomalyco.blooms.desktop
+      - for d in locale/*/LC_MESSAGES; do
+          lang=$$(basename $$(dirname $$d));
+          install -D -m 644 $$d/blooms-in-gnome.mo
+            ${FLATPAK_DEST}/share/locale/$$lang/LC_MESSAGES/blooms-in-gnome.mo;
+        done
+    sources:
+      - type: dir
+        path: ..
