@@ -32,6 +32,10 @@ def get_message_keys(conversation_key: bytes, nonce: bytes):
     hmac_key = keys[44:76]
     return chacha_key, chacha_nonce, hmac_key
 
+# hmac_key is derived per NIP-44 spec but unused here because
+# ChaCha20-Poly1305 provides AEAD authentication natively.
+# Per-file nonces ensure unique (key, nonce) pairs per NIP-44.
+
 
 def encrypt(plaintext: bytes, conversation_key: bytes) -> bytes:
     nonce = os.urandom(NONCE_LEN)

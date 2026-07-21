@@ -27,8 +27,10 @@ def _load_names() -> dict:
 
 
 def _save_names(names: dict):
-    cfg.CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-    NAMES_PATH.write_text(json.dumps(names, indent=2))
+    cfg.CONFIG_DIR.mkdir(parents=True, exist_ok=True, mode=0o700)
+    fd = os.open(str(NAMES_PATH), os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
+        json.dump(names, f, indent=2)
 
 
 class BlossomFS(Operations):
@@ -44,10 +46,11 @@ class BlossomFS(Operations):
         self.conversation_key = None
         if self.nsec and self.npub:
             self.conversation_key = get_conversation_key(self.nsec, self.npub)
+            self.nsec = None
 
         self._server_health: dict[str, bool] = {}
 
-        self.client = BlossomClient(self.servers[0] if self.servers else "", self.nsec)
+        self.client = BlossomClient(self.servers[0] if self.servers else "", None)
 
         self.names = _load_names()
         self.blobs: dict[str, dict] = {}
@@ -64,7 +67,7 @@ class BlossomFS(Operations):
         merged: dict[str, dict] = {}
         for url in self.servers:
             try:
-                cl = BlossomClient(url, self.nsec)
+                cl = BlossomClient(url, None)
                 result = cl.list_blobs(self.npub)
                 self._server_health[url] = True
                 for b in result:
@@ -118,22 +121,19 @@ class BlossomFS(Operations):
     # -- FUSE operations --
 
     def access(self, path, amode):
-        if path == "/":
+        if path == "/" or path == "/.info":
             return
-        if path == "/.info":
-            return
-        blob = self._lookup(path.lstrip("/"))
+        blob = self._lookup(path.removeprefix("/"))
         if not blob:
             raise FuseOSError(errno.ENOENT)
 
     def getattr(self, path, fh=None):
         if path == "/":
             return self._make_attr(stat.S_IFDIR | 0o755, 4096)
-
         if path == "/.info":
             return self._make_attr(stat.S_IFREG | 0o444, 4096)
 
-        name = path.lstrip("/")
+        name = path.removeprefix("/")
         blob = self._lookup(name)
         if blob:
             size = blob.get("size", 0)
@@ -146,10 +146,13 @@ class BlossomFS(Operations):
         return self._all_entries()
 
     def open(self, path, flags):
-        name = path.lstrip("/")
+        name = path.removeprefix("/")
         blob = self._lookup(name)
         if not blob:
             raise FuseOSError(errno.ENOENT)
+
+        if not self.conversation_key:
+            raise FuseOSError(errno.EACCES)
 
         try:
             if blob.get("sharded"):
@@ -157,10 +160,7 @@ class BlossomFS(Operations):
             else:
                 encrypted = self.client.download_fastest(self.servers, blob["sha256"])
 
-            if self.conversation_key:
-                decrypted = decrypt(encrypted, self.conversation_key)
-            else:
-                decrypted = encrypted
+            decrypted = decrypt(encrypted, self.conversation_key)
             with self._lock:
                 fd = self._next_fd
                 self._next_fd += 1
@@ -197,7 +197,7 @@ class BlossomFS(Operations):
             self._upload(name, bytes(buf))
 
     def create(self, path, mode, fi=None):
-        name = path.lstrip("/")
+        name = path.removeprefix("/")
         with self._lock:
             fd = self._next_fd
             self._next_fd += 1
@@ -208,24 +208,25 @@ class BlossomFS(Operations):
     def write(self, path, data, offset, fh):
         with self._lock:
             buf = self.write_buffers.get(fh)
-        if buf is None:
-            raise FuseOSError(errno.EBADF)
-        end = offset + len(data)
-        if end > len(buf):
-            buf.extend(b"\x00" * (end - len(buf)))
-        buf[offset:end] = data
+            if buf is None:
+                raise FuseOSError(errno.EBADF)
+            end = offset + len(data)
+            if end > len(buf):
+                buf.extend(b"\x00" * (end - len(buf)))
+            buf[offset:end] = data
         return len(data)
 
     def truncate(self, path, length, fh=None):
         with self._lock:
-            for buf in self.write_buffers.values():
+            if fh is not None and fh in self.write_buffers:
+                buf = self.write_buffers[fh]
                 if len(buf) > length:
                     buf[:] = buf[:length]
                 elif len(buf) < length:
                     buf.extend(b"\x00" * (length - len(buf)))
 
     def unlink(self, path):
-        name = path.lstrip("/")
+        name = path.removeprefix("/")
         blob = self._lookup(name)
         if not blob:
             raise FuseOSError(errno.ENOENT)
@@ -242,10 +243,12 @@ class BlossomFS(Operations):
             _save_names(self.names)
 
     def rename(self, old, new):
-        old_name = old.lstrip("/")
-        new_name = new.lstrip("/")
+        old_name = old.removeprefix("/")
+        new_name = new.removeprefix("/")
         with self._lock:
             if old_name in self.names:
+                if new_name in self.names:
+                    self.names.pop(new_name)
                 self.names[new_name] = self.names.pop(old_name)
                 _save_names(self.names)
 
@@ -286,8 +289,6 @@ class BlossomFS(Operations):
                     self.names[name] = entry
                     _save_names(self.names)
 
-                ok = 1
-                total = 1
                 if errors:
                     self._notify(_("Uploaded: {hash}\u2026 (shard errors: {e})").format(
                         hash=manifest_sha[:16], e=", ".join(errors)[:60]))
@@ -323,7 +324,8 @@ class BlossomFS(Operations):
                     self._notify(_("Uploaded: {hash}\u2026 ({ok}/{total} servers)").format(
                         hash=sha256[:16], ok=ok, total=total))
         except Exception:
-            pass
+            import traceback
+            traceback.print_exc()
 
     def _notify(self, msg: str):
         try:

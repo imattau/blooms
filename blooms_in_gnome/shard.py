@@ -8,11 +8,18 @@ MANIFEST_VERSION = 1
 SERVER_TAG = "blooms-shard-v1"
 
 
+MAX_SERVERS = 20
+
+
 def calc_k_m(num_servers: int) -> tuple[int, int]:
     if num_servers <= 1:
         return 1, 0
+    if num_servers > MAX_SERVERS:
+        num_servers = MAX_SERVERS
     k = num_servers
     m = max(1, num_servers // 2)
+    if m > 128:
+        m = 128
     return k, m
 
 

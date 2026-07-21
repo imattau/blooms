@@ -11,8 +11,8 @@ finish-args:
   - --socket=wayland
   - --socket=session-bus
   - --device=dri
-  - --filesystem=host
-  - --filesystem=/tmp
+  - --filesystem=~/.config/blooms:create
+  - --filesystem=~/Blossom:create
   - --talk-name=org.freedesktop.secrets
   - --talk-name=org.kde.kwalletd5
   - --talk-name=org.kde.kwalletd6

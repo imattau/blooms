@@ -1,7 +1,9 @@
 import hashlib
 import json
+import os
 import time
 import base64
+import urllib.parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import coincurve
@@ -9,9 +11,11 @@ import requests
 
 from .shard import calc_k_m, shard_encode, shard_decode, build_manifest, parse_manifest
 
+_REQUEST_TIMEOUT = 30
+
 
 def _create_auth_token(
-    private_key_hex: str | None, action: str, sha256: str | None = None, expiry: int = 3600
+    private_key_hex: str | None, action: str, sha256: str | None = None, expiry: int = 300
 ) -> str | None:
     if not private_key_hex:
         return None
@@ -23,6 +27,7 @@ def _create_auth_token(
     tags = [
         ["t", action],
         ["expiration", str(expires_at)],
+        ["nonce", os.urandom(16).hex()],
     ]
     if sha256:
         tags.append(["x", sha256])
@@ -86,7 +91,7 @@ class BlossomClient:
             "X-SHA-256": sha256,
         }
 
-        resp = requests.put(f"{self.server_url}/upload", data=file_bytes, headers=headers)
+        resp = requests.put(f"{self.server_url}/upload", data=file_bytes, headers=headers, timeout=_REQUEST_TIMEOUT)
         resp.raise_for_status()
         return resp.json()
 
@@ -230,7 +235,7 @@ class BlossomClient:
         return shard_decode(ordered, k, m, original_size)
 
     def download(self, sha256: str) -> bytes:
-        resp = requests.get(f"{self.server_url}/{sha256}")
+        resp = requests.get(f"{self.server_url}/{sha256}", timeout=_REQUEST_TIMEOUT)
         resp.raise_for_status()
         return resp.content
 
@@ -257,6 +262,7 @@ class BlossomClient:
         resp = requests.delete(
             f"{self.server_url}/{sha256}",
             headers={"Authorization": f"Nostr {token}"},
+            timeout=_REQUEST_TIMEOUT,
         )
         return resp.status_code == 200
 
@@ -290,9 +296,9 @@ class BlossomClient:
     def list_blobs(self, pubkey_hex: str | None = None) -> list:
         if self.private_key_hex:
             sk = coincurve.PrivateKey.from_hex(self.private_key_hex)
-            pk = pubkey_hex or sk.public_key.format()[1:].hex()
+            pk = urllib.parse.quote(pubkey_hex or sk.public_key.format()[1:].hex(), safe="")
         else:
-            pk = pubkey_hex or ""
+            pk = urllib.parse.quote(pubkey_hex or "", safe="")
 
         token = _create_auth_token(self.private_key_hex, "list")
         headers = {}
@@ -301,6 +307,7 @@ class BlossomClient:
         resp = requests.get(
             f"{self.server_url}/list/{pk}",
             headers=headers,
+            timeout=_REQUEST_TIMEOUT,
         )
         resp.raise_for_status()
         return resp.json()

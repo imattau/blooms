@@ -248,28 +248,33 @@ class BloomsTray:
         if self._icon:
             self._icon.stop()
 
-    def _tick(self):
-        if not self._running or not self._icon:
-            return
+    def _tick_loop(self):
+        while self._running:
+            if not self._icon:
+                time.sleep(1)
+                continue
 
-        self._update_status()
+            self._update_status()
 
-        now = time.time()
-        pulsing = (now - self._last_upload) < 3.0
+            now = time.time()
+            pulsing = (now - self._last_upload) < 3.0
 
-        if pulsing:
-            self._pulse_state ^= 1
-            icon_img = self._connected_icon if self._pulse_state else self._disconnected_icon
-        elif self._connected:
-            icon_img = self._connected_icon
-        else:
-            icon_img = self._disconnected_icon
+            if pulsing:
+                self._pulse_state ^= 1
+                icon_img = self._connected_icon if self._pulse_state else self._disconnected_icon
+            elif self._connected:
+                icon_img = self._connected_icon
+            else:
+                icon_img = self._disconnected_icon
 
-        self._icon.icon = icon_img
-        self._icon.menu = self._build_menu()
+            try:
+                self._icon.icon = icon_img
+                self._icon.menu = self._build_menu()
+            except Exception:
+                pass
 
-        interval = 0.5 if pulsing else 5.0
-        threading.Timer(interval, self._tick).start()
+            interval = 0.5 if pulsing else 5.0
+            time.sleep(interval)
 
     def run(self):
         import pystray
@@ -281,5 +286,5 @@ class BloomsTray:
             title=_("Blooms in Gnome"),
             menu=self._build_menu(),
         )
-        self._tick()
+        threading.Thread(target=self._tick_loop, daemon=True).start()
         self._icon.run()

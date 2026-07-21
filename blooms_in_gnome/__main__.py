@@ -20,6 +20,7 @@ def _cmd_config():
     print()
     print(_("CLI:"))
     print("  blooms-mount --set-nsec <nsec>")
+    print("  blooms-mount --set-nsec-stdin    (read from stdin, no echo)")
     print("  blooms-mount --set-npub <hex>")
     print("  blooms-mount --add-server <url>")
     print("  blooms-mount --add-relay <wss://...>")
@@ -76,6 +77,8 @@ def main():
         help=_("Start tray icon (starts FUSE mount automatically)"),
     )
     parser.add_argument("--set-nsec", metavar="NSEC", help=_("Store nsec in keyring"))
+    parser.add_argument("--set-nsec-stdin", action="store_true",
+                        help=_("Read nsec from stdin (no echo, safer than --set-nsec)"))
     parser.add_argument("--set-npub", metavar="HEX", help=_("Set public key"))
     parser.add_argument("--add-server", metavar="URL", help=_("Add a Blossom server"))
     parser.add_argument("--add-relay", metavar="URL", help=_("Add a Nostr relay"))
@@ -87,6 +90,10 @@ def main():
         return
     if args.set_nsec:
         _cmd_set_nsec(args.set_nsec)
+        return
+    if args.set_nsec_stdin:
+        nsec = sys.stdin.readline().strip()
+        _cmd_set_nsec(nsec)
         return
     if args.set_npub:
         _cmd_set_npub(args.set_npub)
