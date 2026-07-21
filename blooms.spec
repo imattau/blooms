@@ -7,7 +7,7 @@ Version:        %{version}
 Release:        %{release}%{?dist}
 Summary:        Nostr Blossom FUSE mount with tray icon
 
-License:        Unlicense
+License:        LGPL-3.0-or-later
 URL:            https://github.com/anomalyco/blooms
 Source0:        %{name}-%{version}.tar.gz
 

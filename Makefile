@@ -9,6 +9,7 @@ extract:
 		--project="Blooms in Gnome" \
 		--version="0.1.0" \
 		--copyright="Blooms in Gnome contributors" \
+		--license="LGPL-3.0-or-later" \
 		--msgid-bugs-address="https://github.com/anomalyco/blooms" \
 		--output-file=$(POT) \
 		--keywords="_" \

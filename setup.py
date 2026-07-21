@@ -26,5 +26,6 @@ setup(
             "blooms-tray=blooms_in_gnome.__main__:tray_main",
         ],
     },
+    license="LGPL-3.0-or-later",
     python_requires=">=3.10",
 )
