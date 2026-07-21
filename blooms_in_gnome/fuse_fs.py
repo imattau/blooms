@@ -37,9 +37,7 @@ class BlossomFS(Operations):
         self._lock = threading.Lock()
         self._next_fd = 1
 
-        servers = self.config.get("servers", [])
-        self.server = servers[0] if servers else ""
-
+        self.servers = self.config.get("servers", [])
         self.nsec = self.config.get("nsec") or None
         self.npub = self.config.get("npub") or ""
 
@@ -47,7 +45,9 @@ class BlossomFS(Operations):
         if self.nsec and self.npub:
             self.conversation_key = get_conversation_key(self.nsec, self.npub)
 
-        self.client = BlossomClient(self.server, self.nsec)
+        self._server_health: dict[str, bool] = {}
+
+        self.client = BlossomClient(self.servers[0] if self.servers else "", self.nsec)
 
         self.names = _load_names()
         self.blobs: dict[str, dict] = {}
@@ -58,13 +58,20 @@ class BlossomFS(Operations):
         self.write_paths: dict[int, str] = {}
 
     def _fetch_blobs(self):
-        if not self.server or not self.npub:
+        if not self.servers or not self.npub:
             return
-        try:
-            result = self.client.list_blobs(self.npub)
-            self.blobs = {b["sha256"]: b for b in result}
-        except Exception:
-            self.blobs = {}
+        self._server_health = {}
+        merged: dict[str, dict] = {}
+        for url in self.servers:
+            try:
+                cl = BlossomClient(url, self.nsec)
+                result = cl.list_blobs(self.npub)
+                self._server_health[url] = True
+                for b in result:
+                    merged.setdefault(b["sha256"], b)
+            except Exception:
+                self._server_health[url] = False
+        self.blobs = merged
 
     # -- helpers --
 
@@ -90,6 +97,11 @@ class BlossomFS(Operations):
             if sha256 not in named_sha256s:
                 entries.add(self._sha256_to_name(sha256))
         return sorted(entries)
+
+    def _server_health_summary(self) -> tuple[int, int]:
+        total = len(self.servers)
+        ok = sum(1 for v in self._server_health.values() if v)
+        return ok, total
 
     def _make_attr(self, mode: int, size: int = 0, mtime: float = 0) -> dict:
         now = time.time()
@@ -119,7 +131,7 @@ class BlossomFS(Operations):
             return self._make_attr(stat.S_IFDIR | 0o755, 4096)
 
         if path == "/.info":
-            return self._make_attr(stat.S_IFREG | 0o444, 1024)
+            return self._make_attr(stat.S_IFREG | 0o444, 4096)
 
         name = path.lstrip("/")
         blob = self._lookup(name)
@@ -140,7 +152,7 @@ class BlossomFS(Operations):
             raise FuseOSError(errno.ENOENT)
         sha256 = blob["sha256"]
         try:
-            encrypted = self.client.download(sha256)
+            encrypted = self.client.download_fastest(self.servers, sha256)
             if self.conversation_key:
                 decrypted = decrypt(encrypted, self.conversation_key)
             else:
@@ -158,12 +170,16 @@ class BlossomFS(Operations):
             buf = self.read_buffers.get(fh, self.write_buffers.get(fh))
         if buf is None:
             if path == "/.info":
-                info = (
-                    _("server: {url}\n").format(url=self.server) +
-                    _("pubkey: {key}\n").format(key=self.npub) +
-                    _("blobs: {count}\n").format(count=len(self.blobs)) +
-                    _("named: {count}\n").format(count=len(self.names))
-                )
+                ok, total = self._server_health_summary()
+                lines = []
+                for url in self.servers:
+                    status = _("healthy") if self._server_health.get(url) else _("unreachable")
+                    lines.append(_("server: {url}    {status}").format(url=url, status=status))
+                lines.append(_("pubkey: {key}").format(key=self.npub))
+                lines.append(_("blobs: {count}").format(count=len(self.blobs)))
+                lines.append(_("named: {count}").format(count=len(self.names)))
+                lines.append(_("servers: {ok}/{total} healthy").format(ok=ok, total=total))
+                info = "\n".join(lines) + "\n"
                 return info.encode()[offset : offset + size]
             return b""
         return buf[offset : offset + size]
@@ -211,7 +227,9 @@ class BlossomFS(Operations):
             raise FuseOSError(errno.ENOENT)
         sha256 = blob["sha256"]
         try:
-            self.client.delete(sha256)
+            success, failed = self.client.delete_all(self.servers, sha256)
+            if not success:
+                raise FuseOSError(errno.EIO)
         except Exception:
             raise FuseOSError(errno.EIO)
         with self._lock:
@@ -242,12 +260,21 @@ class BlossomFS(Operations):
 
     def _upload(self, name: str, data: bytes):
         try:
+            if not self.servers:
+                return
+
             if self.conversation_key:
                 encrypted = encrypt(data, self.conversation_key)
             else:
                 encrypted = data
 
-            result = self.client.upload(encrypted, "application/octet-stream")
+            results, errors = self.client.upload_all(self.servers, encrypted)
+
+            if not results:
+                return
+
+            first_url = next(iter(results))
+            result = results[first_url]
             sha256 = result["sha256"]
 
             entry = {
@@ -262,7 +289,29 @@ class BlossomFS(Operations):
                 self.names[name] = entry
                 _save_names(self.names)
                 self.blobs[sha256] = entry
-        except Exception as e:
+
+            ok = len(results)
+            total = len(self.servers)
+            if errors:
+                failed_urls = ", ".join(errors)
+                msg = _("Uploaded: {hash}\u2026 ({ok}/{total} servers, errors: {failed})").format(
+                    hash=sha256[:16], ok=ok, total=total, failed=failed_urls)
+            else:
+                msg = _("Uploaded: {hash}\u2026 ({ok}/{total} servers)").format(
+                    hash=sha256[:16], ok=ok, total=total)
+
+            self._notify(msg)
+        except Exception:
+            pass
+
+    def _notify(self, msg: str):
+        try:
+            import subprocess
+            subprocess.Popen(
+                ["notify-send", "Blooms", msg],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+        except Exception:
             pass
 
 

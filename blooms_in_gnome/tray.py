@@ -76,6 +76,8 @@ class BloomsTray:
         self._running = True
         self._connected = False
         self._blob_count = 0
+        self._server_ok = 0
+        self._server_total = 0
         self._last_upload = 0.0
         self._pulse_state = 0
         self._status_label = _("Starting\u2026")
@@ -99,18 +101,35 @@ class BloomsTray:
         if not servers or not c.get("npub"):
             self._connected = False
             self._blob_count = 0
+            self._server_ok = 0
+            self._server_total = 0
             self._status_label = _("Not configured")
             return
 
-        try:
-            client = BlossomClient(servers[0], c.get("nsec") or None)
-            blobs = client.list_blobs(c["npub"])
-            self._blob_count = len(blobs)
-            self._connected = True
-            n = self._blob_count
-            self._status_label = _("Connected \u2014 {count} blob").format(count=n) if n == 1 else _("Connected \u2014 {count} blobs").format(count=n)
-        except Exception:
-            self._connected = False
+        healthy = 0
+        blobs_merged: set[str] = set()
+        nsec = c.get("nsec") or None
+        npub = c["npub"]
+
+        for url in servers:
+            try:
+                client = BlossomClient(url, nsec)
+                result = client.list_blobs(npub)
+                healthy += 1
+                for b in result:
+                    blobs_merged.add(b["sha256"])
+            except Exception:
+                pass
+
+        self._server_ok = healthy
+        self._server_total = len(servers)
+        self._blob_count = len(blobs_merged)
+        self._connected = healthy > 0
+
+        if self._connected:
+            self._status_label = _("{ok}/{total} servers healthy \u2014 {count} blobs").format(
+                ok=healthy, total=len(servers), count=len(blobs_merged))
+        else:
             self._status_label = _("Disconnected")
 
     def _build_menu(self):
@@ -172,9 +191,27 @@ class BloomsTray:
             conv = get_conversation_key(nsec, npub)
             encrypted = encrypt(data, conv)
             client = BlossomClient(servers[0], nsec)
-            result = client.upload(encrypted)
+            results, errors = client.upload_all(servers, encrypted)
+
+            if not results:
+                self._send_notify("Blooms", _("Upload failed: all servers unreachable"))
+                return
+
+            first_url = next(iter(results))
+            sha256 = results[first_url]["sha256"]
             self._last_upload = time.time()
-            self._send_notify("Blooms", _("Uploaded: {hash}\u2026").format(hash=result["sha256"][:16]))
+
+            ok = len(results)
+            total = len(servers)
+            if errors:
+                failed_urls = ", ".join(errors)
+                self._send_notify("Blooms",
+                    _("Uploaded: {hash}\u2026 ({ok}/{total} servers, errors: {failed})").format(
+                        hash=sha256[:16], ok=ok, total=total, failed=failed_urls))
+            else:
+                self._send_notify("Blooms",
+                    _("Uploaded: {hash}\u2026 ({ok}/{total} servers)").format(
+                        hash=sha256[:16], ok=ok, total=total))
         except Exception as e:
             self._send_notify("Blooms", _("Upload failed: {error}").format(error=e))
 

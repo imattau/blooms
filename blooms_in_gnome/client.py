@@ -2,6 +2,7 @@ import hashlib
 import json
 import time
 import base64
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import coincurve
 import requests
@@ -46,8 +47,8 @@ def _create_auth_token(
 
 
 class BlossomClient:
-    def __init__(self, server_url: str, private_key_hex: str | None = None):
-        self.server_url = server_url.rstrip("/")
+    def __init__(self, server_url: str | None = None, private_key_hex: str | None = None):
+        self.server_url = server_url.rstrip("/") if server_url else ""
         self.private_key_hex = private_key_hex
 
     def upload(self, file_bytes: bytes, content_type: str = "application/octet-stream") -> dict:
@@ -67,10 +68,57 @@ class BlossomClient:
         resp.raise_for_status()
         return resp.json()
 
+    def upload_all(self, servers: list[str], file_bytes: bytes,
+                   content_type: str = "application/octet-stream"
+                   ) -> tuple[dict[str, dict], dict[str, Exception]]:
+        sha256 = hashlib.sha256(file_bytes).hexdigest()
+        results: dict[str, dict] = {}
+        errors: dict[str, Exception] = {}
+
+        def _do(url: str) -> tuple[str, dict]:
+            token = _create_auth_token(self.private_key_hex, "upload", sha256=sha256)
+            headers = {
+                "Authorization": f"Nostr {token}",
+                "Content-Type": content_type,
+                "Content-Length": str(len(file_bytes)),
+                "X-SHA-256": sha256,
+            }
+            r = requests.put(f"{url}/upload", data=file_bytes, headers=headers, timeout=30)
+            r.raise_for_status()
+            return url, r.json()
+
+        with ThreadPoolExecutor(max_workers=len(servers)) as pool:
+            fut_map = {pool.submit(_do, s): s for s in servers}
+            for fut in as_completed(fut_map):
+                url = fut_map[fut]
+                try:
+                    u, desc = fut.result()
+                    results[u] = desc
+                except Exception as e:
+                    errors[url] = e
+
+        return results, errors
+
     def download(self, sha256: str) -> bytes:
         resp = requests.get(f"{self.server_url}/{sha256}")
         resp.raise_for_status()
         return resp.content
+
+    def download_fastest(self, servers: list[str], sha256: str) -> bytes:
+        def _do(url: str) -> bytes:
+            r = requests.get(f"{url}/{sha256}", timeout=30)
+            r.raise_for_status()
+            return r.content
+
+        with ThreadPoolExecutor(max_workers=len(servers)) as pool:
+            fut_map = {pool.submit(_do, s): s for s in servers}
+            for fut in as_completed(fut_map):
+                try:
+                    return fut.result()
+                except Exception:
+                    continue
+
+        raise RuntimeError(f"All {len(servers)} servers failed for {sha256}")
 
     def delete(self, sha256: str) -> bool:
         token = _create_auth_token(self.private_key_hex, "delete", sha256=sha256)
@@ -81,6 +129,33 @@ class BlossomClient:
             headers={"Authorization": f"Nostr {token}"},
         )
         return resp.status_code == 200
+
+    def delete_all(self, servers: list[str], sha256: str) -> tuple[list[str], list[str]]:
+        success: list[str] = []
+        failed: list[str] = []
+
+        def _do(url: str) -> bool:
+            token = _create_auth_token(self.private_key_hex, "delete", sha256=sha256)
+            if not token:
+                return False
+            r = requests.delete(f"{url}/{sha256}",
+                                headers={"Authorization": f"Nostr {token}"},
+                                timeout=30)
+            return r.status_code == 200
+
+        with ThreadPoolExecutor(max_workers=len(servers)) as pool:
+            fut_map = {pool.submit(_do, s): s for s in servers}
+            for fut in as_completed(fut_map):
+                url = fut_map[fut]
+                try:
+                    if fut.result():
+                        success.append(url)
+                    else:
+                        failed.append(url)
+                except Exception:
+                    failed.append(url)
+
+        return success, failed
 
     def list_blobs(self, pubkey_hex: str | None = None) -> list:
         if self.private_key_hex:

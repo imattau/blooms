@@ -4,134 +4,210 @@
 #
 msgid ""
 msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-07-22 07:23+1000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: it <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
 
+#: blooms_in_gnome/__main__.py:12
 msgid "Current config:"
 msgstr "Configurazione corrente:"
 
+#: blooms_in_gnome/__main__.py:13 blooms_in_gnome/__main__.py:16
 msgid "(not set)"
 msgstr "(non impostato)"
 
+#: blooms_in_gnome/__main__.py:14 blooms_in_gnome/__main__.py:15
 msgid "(defaults)"
 msgstr "(predefiniti)"
 
+#: blooms_in_gnome/__main__.py:16
 msgid "(stored in keyring)"
 msgstr "(archiviato nel portachiavi)"
 
+#: blooms_in_gnome/__main__.py:18
 msgid "Config file:"
 msgstr "File di configurazione:"
 
+#: blooms_in_gnome/__main__.py:21
 msgid "CLI:"
 msgstr "CLI:"
 
+#: blooms_in_gnome/__main__.py:32
 msgid "nsec saved to keyring"
 msgstr "nsec salvato nel portachiavi"
 
+#: blooms_in_gnome/__main__.py:39
+#, python-brace-format
 msgid "npub set to {npub}"
 msgstr "npub impostato a {npub}"
 
+#: blooms_in_gnome/__main__.py:47
+#, python-brace-format
 msgid "server added: {url}"
 msgstr "server aggiunto: {url}"
 
+#: blooms_in_gnome/__main__.py:55
+#, python-brace-format
 msgid "relay added: {url}"
 msgstr "relè aggiunto: {url}"
 
+#: blooms_in_gnome/__main__.py:60
 msgid "Blooms in Gnome — Blossom FUSE mount"
 msgstr "Blooms in Gnome — Montaggio FUSE Blossom"
 
+#: blooms_in_gnome/__main__.py:64
 msgid "Mount point (default: ~/Blossom)"
 msgstr "Punto di montaggio (predefinito: ~/Blossom)"
 
+#: blooms_in_gnome/__main__.py:68
 msgid "Show current configuration"
 msgstr "Mostra configurazione corrente"
 
+#: blooms_in_gnome/__main__.py:72
 msgid "Run FUSE mount in foreground"
 msgstr "Esegui montaggio FUSE in primo piano"
 
+#: blooms_in_gnome/__main__.py:76
 msgid "Start tray icon (starts FUSE mount automatically)"
 msgstr "Avvia icona della bandiera (avvia montaggio FUSE automaticamente)"
 
+#: blooms_in_gnome/__main__.py:78
 msgid "Store nsec in keyring"
 msgstr "Salva nsec nel portachiavi"
 
+#: blooms_in_gnome/__main__.py:79
 msgid "Set public key"
 msgstr "Imposta chiave pubblica"
 
+#: blooms_in_gnome/__main__.py:80
 msgid "Add a Blossom server"
 msgstr "Aggiungi un server Blossom"
 
+#: blooms_in_gnome/__main__.py:81
 msgid "Add a Nostr relay"
 msgstr "Aggiungi un relè Nostr"
 
-msgid "server: {url}
-"
-msgstr "server: {url}
-"
+#: blooms_in_gnome/fuse_fs.py:176
+msgid "healthy"
+msgstr "salutare"
 
-msgid "pubkey: {key}
-"
-msgstr "chiave pubblica: {key}
-"
+#: blooms_in_gnome/fuse_fs.py:176
+msgid "unreachable"
+msgstr "irraggiungibile"
 
-msgid "blobs: {count}
-"
-msgstr "blob: {count}
-"
+#: blooms_in_gnome/fuse_fs.py:177
+#, fuzzy, python-brace-format
+msgid "server: {url}    {status}"
+msgstr "server: {url"
 
-msgid "named: {count}
-"
-msgstr "denominati: {count}
-"
+#: blooms_in_gnome/fuse_fs.py:178
+#, fuzzy, python-brace-format
+msgid "pubkey: {key}"
+msgstr "chiave pubblica: {key"
 
+#: blooms_in_gnome/fuse_fs.py:179
+#, fuzzy, python-brace-format
+msgid "blobs: {count}"
+msgstr "blob: {count"
+
+#: blooms_in_gnome/fuse_fs.py:180
+#, fuzzy, python-brace-format
+msgid "named: {count}"
+msgstr "denominati: {count"
+
+#: blooms_in_gnome/fuse_fs.py:181
+#, python-brace-format
+msgid "servers: {ok}/{total} healthy"
+msgstr "server: {ok}/{totale} integri"
+
+#: blooms_in_gnome/fuse_fs.py:297 blooms_in_gnome/tray.py:209
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+msgstr "Caricato: {hash}… ({ok}/{total} server, errori: {failed})"
+
+#: blooms_in_gnome/fuse_fs.py:300 blooms_in_gnome/tray.py:213
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers)"
+msgstr "Caricato: {hash}… ({ok}/{total} server)"
+
+#: blooms_in_gnome/tray.py:83
 msgid "Starting…"
 msgstr "Avvio…"
 
+#: blooms_in_gnome/tray.py:106
 msgid "Not configured"
 msgstr "Non configurato"
 
-msgid "Connected — {count} blob"
-msgstr "Connesso — {count} blob"
+#: blooms_in_gnome/tray.py:130
+#, python-brace-format
+msgid "{ok}/{total} servers healthy — {count} blobs"
+msgstr "{ok}/{total} server integri: {count} BLOB"
 
-msgid "Connected — {count} blobs"
-msgstr "Connesso — {count} blob"
-
+#: blooms_in_gnome/tray.py:133
 msgid "Disconnected"
 msgstr "Disconnesso"
 
+#: blooms_in_gnome/tray.py:139
 msgid "Open Folder"
 msgstr "Apri cartella"
 
+#: blooms_in_gnome/tray.py:140
 msgid "Upload File…"
 msgstr "Carica file…"
 
+#: blooms_in_gnome/tray.py:144
 msgid "Config"
 msgstr "Configurazione"
 
+#: blooms_in_gnome/tray.py:146
 msgid "Quit"
 msgstr "Esci"
 
+#: blooms_in_gnome/tray.py:162
 msgid "Select file to upload to Blossom"
 msgstr "Seleziona file da caricare su Blossom"
 
+#: blooms_in_gnome/tray.py:165
 msgid "Cancel"
 msgstr "Annulla"
 
+#: blooms_in_gnome/tray.py:166
 msgid "Upload"
 msgstr "Carica"
 
+#: blooms_in_gnome/tray.py:187
 msgid "Configure keys and servers first"
 msgstr "Configura prima chiavi e server"
 
-msgid "Uploaded: {hash}…"
-msgstr "Caricato: {hash}…"
+#: blooms_in_gnome/tray.py:197
+#, fuzzy, python-brace-format
+msgid "Upload failed: all servers unreachable"
+msgstr "Caricamento fallito: {error}"
 
+#: blooms_in_gnome/tray.py:216
+#, python-brace-format
 msgid "Upload failed: {error}"
 msgstr "Caricamento fallito: {error}"
 
+#: blooms_in_gnome/tray.py:272
 msgid "Blooms in Gnome"
 msgstr "Blooms in Gnome"
+
+#~ msgid "Connected — {count} blob"
+#~ msgstr "Connesso — {count} blob"
+
+#~ msgid "Connected — {count} blobs"
+#~ msgstr "Connesso — {count} blob"
+
+#~ msgid "Uploaded: {hash}…"
+#~ msgstr "Caricato: {hash}…"
 

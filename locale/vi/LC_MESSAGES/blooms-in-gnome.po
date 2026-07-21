@@ -4,134 +4,210 @@
 #
 msgid ""
 msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-07-22 07:23+1000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: vi\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: vi <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
 
+#: blooms_in_gnome/__main__.py:12
 msgid "Current config:"
 msgstr "Cấu hình hiện tại:"
 
+#: blooms_in_gnome/__main__.py:13 blooms_in_gnome/__main__.py:16
 msgid "(not set)"
 msgstr "(chưa đặt)"
 
+#: blooms_in_gnome/__main__.py:14 blooms_in_gnome/__main__.py:15
 msgid "(defaults)"
 msgstr "(mặc định)"
 
+#: blooms_in_gnome/__main__.py:16
 msgid "(stored in keyring)"
 msgstr "(được lưu trong chùm khóa)"
 
+#: blooms_in_gnome/__main__.py:18
 msgid "Config file:"
 msgstr "Tệp cấu hình:"
 
+#: blooms_in_gnome/__main__.py:21
 msgid "CLI:"
 msgstr "CLI:"
 
+#: blooms_in_gnome/__main__.py:32
 msgid "nsec saved to keyring"
 msgstr "nsec đã được lưu vào chùm khóa"
 
+#: blooms_in_gnome/__main__.py:39
+#, python-brace-format
 msgid "npub set to {npub}"
 msgstr "npub đã được đặt thành {npub}"
 
+#: blooms_in_gnome/__main__.py:47
+#, python-brace-format
 msgid "server added: {url}"
 msgstr "máy chủ đã được thêm: {url}"
 
+#: blooms_in_gnome/__main__.py:55
+#, python-brace-format
 msgid "relay added: {url}"
 msgstr "rơ-le đã được thêm: {url}"
 
+#: blooms_in_gnome/__main__.py:60
 msgid "Blooms in Gnome — Blossom FUSE mount"
 msgstr "Blooms in Gnome — Gắn kết FUSE Blossom"
 
+#: blooms_in_gnome/__main__.py:64
 msgid "Mount point (default: ~/Blossom)"
 msgstr "Điểm gắn kết (mặc định: ~/Blossom)"
 
+#: blooms_in_gnome/__main__.py:68
 msgid "Show current configuration"
 msgstr "Hiển thị cấu hình hiện tại"
 
+#: blooms_in_gnome/__main__.py:72
 msgid "Run FUSE mount in foreground"
 msgstr "Chạy gắn kết FUSE ở nền trước"
 
+#: blooms_in_gnome/__main__.py:76
 msgid "Start tray icon (starts FUSE mount automatically)"
 msgstr "Khởi động biểu tượng khay (tự động khởi động gắn kết FUSE)"
 
+#: blooms_in_gnome/__main__.py:78
 msgid "Store nsec in keyring"
 msgstr "Lưu nsec vào chùm khóa"
 
+#: blooms_in_gnome/__main__.py:79
 msgid "Set public key"
 msgstr "Đặt khóa công khai"
 
+#: blooms_in_gnome/__main__.py:80
 msgid "Add a Blossom server"
 msgstr "Thêm máy chủ Blossom"
 
+#: blooms_in_gnome/__main__.py:81
 msgid "Add a Nostr relay"
 msgstr "Thêm rơ-le Nostr"
 
-msgid "server: {url}
-"
-msgstr "máy chủ: {url}
-"
+#: blooms_in_gnome/fuse_fs.py:176
+msgid "healthy"
+msgstr "khỏe mạnh"
 
-msgid "pubkey: {key}
-"
-msgstr "khóa công khai: {key}
-"
+#: blooms_in_gnome/fuse_fs.py:176
+msgid "unreachable"
+msgstr "không thể truy cập được"
 
-msgid "blobs: {count}
-"
-msgstr "blob: {count}
-"
+#: blooms_in_gnome/fuse_fs.py:177
+#, fuzzy, python-brace-format
+msgid "server: {url}    {status}"
+msgstr "máy chủ: {url"
 
-msgid "named: {count}
-"
-msgstr "đã đặt tên: {count}
-"
+#: blooms_in_gnome/fuse_fs.py:178
+#, fuzzy, python-brace-format
+msgid "pubkey: {key}"
+msgstr "khóa công khai: {key"
 
+#: blooms_in_gnome/fuse_fs.py:179
+#, fuzzy, python-brace-format
+msgid "blobs: {count}"
+msgstr "blob: {count"
+
+#: blooms_in_gnome/fuse_fs.py:180
+#, fuzzy, python-brace-format
+msgid "named: {count}"
+msgstr "đã đặt tên: {count"
+
+#: blooms_in_gnome/fuse_fs.py:181
+#, python-brace-format
+msgid "servers: {ok}/{total} healthy"
+msgstr "máy chủ: {ok}/{total} khỏe mạnh"
+
+#: blooms_in_gnome/fuse_fs.py:297 blooms_in_gnome/tray.py:209
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+msgstr "Đã tải lên: {hash}… ({ok}/{total} máy chủ, lỗi: {failed})"
+
+#: blooms_in_gnome/fuse_fs.py:300 blooms_in_gnome/tray.py:213
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers)"
+msgstr "Đã tải lên: {hash}… ({ok}/{total} máy chủ)"
+
+#: blooms_in_gnome/tray.py:83
 msgid "Starting…"
 msgstr "Đang khởi động…"
 
+#: blooms_in_gnome/tray.py:106
 msgid "Not configured"
 msgstr "Chưa được cấu hình"
 
-msgid "Connected — {count} blob"
-msgstr "Đã kết nối — {count} blob"
+#: blooms_in_gnome/tray.py:130
+#, python-brace-format
+msgid "{ok}/{total} servers healthy — {count} blobs"
+msgstr "{ok}/{total} máy chủ hoạt động tốt — {count} đốm màu"
 
-msgid "Connected — {count} blobs"
-msgstr "Đã kết nối — {count} blob"
-
+#: blooms_in_gnome/tray.py:133
 msgid "Disconnected"
 msgstr "Đã ngắt kết nối"
 
+#: blooms_in_gnome/tray.py:139
 msgid "Open Folder"
 msgstr "Mở thư mục"
 
+#: blooms_in_gnome/tray.py:140
 msgid "Upload File…"
 msgstr "Tải tệp lên…"
 
+#: blooms_in_gnome/tray.py:144
 msgid "Config"
 msgstr "Cấu hình"
 
+#: blooms_in_gnome/tray.py:146
 msgid "Quit"
 msgstr "Thoát"
 
+#: blooms_in_gnome/tray.py:162
 msgid "Select file to upload to Blossom"
 msgstr "Chọn tệp để tải lên Blossom"
 
+#: blooms_in_gnome/tray.py:165
 msgid "Cancel"
 msgstr "Hủy"
 
+#: blooms_in_gnome/tray.py:166
 msgid "Upload"
 msgstr "Tải lên"
 
+#: blooms_in_gnome/tray.py:187
 msgid "Configure keys and servers first"
 msgstr "Vui lòng cấu hình khóa và máy chủ trước"
 
-msgid "Uploaded: {hash}…"
-msgstr "Đã tải lên: {hash}…"
+#: blooms_in_gnome/tray.py:197
+#, fuzzy, python-brace-format
+msgid "Upload failed: all servers unreachable"
+msgstr "Tải lên thất bại: {error}"
 
+#: blooms_in_gnome/tray.py:216
+#, python-brace-format
 msgid "Upload failed: {error}"
 msgstr "Tải lên thất bại: {error}"
 
+#: blooms_in_gnome/tray.py:272
 msgid "Blooms in Gnome"
 msgstr "Blooms in Gnome"
+
+#~ msgid "Connected — {count} blob"
+#~ msgstr "Đã kết nối — {count} blob"
+
+#~ msgid "Connected — {count} blobs"
+#~ msgstr "Đã kết nối — {count} blob"
+
+#~ msgid "Uploaded: {hash}…"
+#~ msgstr "Đã tải lên: {hash}…"
 

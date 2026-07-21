@@ -4,134 +4,210 @@
 #
 msgid ""
 msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-07-22 07:23+1000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: zh_CN <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
 
+#: blooms_in_gnome/__main__.py:12
 msgid "Current config:"
 msgstr "当前配置："
 
+#: blooms_in_gnome/__main__.py:13 blooms_in_gnome/__main__.py:16
 msgid "(not set)"
 msgstr "（未设置）"
 
+#: blooms_in_gnome/__main__.py:14 blooms_in_gnome/__main__.py:15
 msgid "(defaults)"
 msgstr "（默认）"
 
+#: blooms_in_gnome/__main__.py:16
 msgid "(stored in keyring)"
 msgstr "（存储在钥匙环中）"
 
+#: blooms_in_gnome/__main__.py:18
 msgid "Config file:"
 msgstr "配置文件："
 
+#: blooms_in_gnome/__main__.py:21
 msgid "CLI:"
 msgstr "命令行："
 
+#: blooms_in_gnome/__main__.py:32
 msgid "nsec saved to keyring"
 msgstr "nsec 已保存到钥匙环"
 
+#: blooms_in_gnome/__main__.py:39
+#, python-brace-format
 msgid "npub set to {npub}"
 msgstr "npub 设置为 {npub}"
 
+#: blooms_in_gnome/__main__.py:47
+#, python-brace-format
 msgid "server added: {url}"
 msgstr "服务器已添加：{url}"
 
+#: blooms_in_gnome/__main__.py:55
+#, python-brace-format
 msgid "relay added: {url}"
 msgstr "中继已添加：{url}"
 
+#: blooms_in_gnome/__main__.py:60
 msgid "Blooms in Gnome — Blossom FUSE mount"
 msgstr "Blooms in Gnome — Blossom FUSE 挂载"
 
+#: blooms_in_gnome/__main__.py:64
 msgid "Mount point (default: ~/Blossom)"
 msgstr "挂载点（默认：~/Blossom）"
 
+#: blooms_in_gnome/__main__.py:68
 msgid "Show current configuration"
 msgstr "显示当前配置"
 
+#: blooms_in_gnome/__main__.py:72
 msgid "Run FUSE mount in foreground"
 msgstr "在前台运行 FUSE 挂载"
 
+#: blooms_in_gnome/__main__.py:76
 msgid "Start tray icon (starts FUSE mount automatically)"
 msgstr "启动托盘图标（自动启动 FUSE 挂载）"
 
+#: blooms_in_gnome/__main__.py:78
 msgid "Store nsec in keyring"
 msgstr "将 nsec 存储在钥匙环中"
 
+#: blooms_in_gnome/__main__.py:79
 msgid "Set public key"
 msgstr "设置公钥"
 
+#: blooms_in_gnome/__main__.py:80
 msgid "Add a Blossom server"
 msgstr "添加 Blossom 服务器"
 
+#: blooms_in_gnome/__main__.py:81
 msgid "Add a Nostr relay"
 msgstr "添加 Nostr 中继"
 
-msgid "server: {url}
-"
-msgstr "服务器：{url}
-"
+#: blooms_in_gnome/fuse_fs.py:176
+msgid "healthy"
+msgstr "健康"
 
-msgid "pubkey: {key}
-"
-msgstr "公钥：{key}
-"
+#: blooms_in_gnome/fuse_fs.py:176
+msgid "unreachable"
+msgstr "无法到达的"
 
-msgid "blobs: {count}
-"
-msgstr "对象数：{count}
-"
+#: blooms_in_gnome/fuse_fs.py:177
+#, fuzzy, python-brace-format
+msgid "server: {url}    {status}"
+msgstr "服务器：{url"
 
-msgid "named: {count}
-"
-msgstr "已命名：{count}
-"
+#: blooms_in_gnome/fuse_fs.py:178
+#, fuzzy, python-brace-format
+msgid "pubkey: {key}"
+msgstr "公钥：{key"
 
+#: blooms_in_gnome/fuse_fs.py:179
+#, fuzzy, python-brace-format
+msgid "blobs: {count}"
+msgstr "对象数：{count"
+
+#: blooms_in_gnome/fuse_fs.py:180
+#, fuzzy, python-brace-format
+msgid "named: {count}"
+msgstr "已命名：{count"
+
+#: blooms_in_gnome/fuse_fs.py:181
+#, python-brace-format
+msgid "servers: {ok}/{total} healthy"
+msgstr "服务器：{ok}/{total} 健康"
+
+#: blooms_in_gnome/fuse_fs.py:297 blooms_in_gnome/tray.py:209
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+msgstr "已上传：{hash}…（{ok}/{total} 个服务器，错误：{failed}）"
+
+#: blooms_in_gnome/fuse_fs.py:300 blooms_in_gnome/tray.py:213
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers)"
+msgstr "已上传：{hash}…（{ok}/{total} 服务器）"
+
+#: blooms_in_gnome/tray.py:83
 msgid "Starting…"
 msgstr "启动中…"
 
+#: blooms_in_gnome/tray.py:106
 msgid "Not configured"
 msgstr "未配置"
 
-msgid "Connected — {count} blob"
-msgstr "已连接 — {count} 个对象"
+#: blooms_in_gnome/tray.py:130
+#, python-brace-format
+msgid "{ok}/{total} servers healthy — {count} blobs"
+msgstr "{ok}/{total} 个服务器运行状况良好 — {count} 个 blob"
 
-msgid "Connected — {count} blobs"
-msgstr "已连接 — {count} 个对象"
-
+#: blooms_in_gnome/tray.py:133
 msgid "Disconnected"
 msgstr "已断开"
 
+#: blooms_in_gnome/tray.py:139
 msgid "Open Folder"
 msgstr "打开文件夹"
 
+#: blooms_in_gnome/tray.py:140
 msgid "Upload File…"
 msgstr "上传文件…"
 
+#: blooms_in_gnome/tray.py:144
 msgid "Config"
 msgstr "配置"
 
+#: blooms_in_gnome/tray.py:146
 msgid "Quit"
 msgstr "退出"
 
+#: blooms_in_gnome/tray.py:162
 msgid "Select file to upload to Blossom"
 msgstr "选择要上传到 Blossom 的文件"
 
+#: blooms_in_gnome/tray.py:165
 msgid "Cancel"
 msgstr "取消"
 
+#: blooms_in_gnome/tray.py:166
 msgid "Upload"
 msgstr "上传"
 
+#: blooms_in_gnome/tray.py:187
 msgid "Configure keys and servers first"
 msgstr "请先配置密钥和服务器"
 
-msgid "Uploaded: {hash}…"
-msgstr "已上传：{hash}…"
+#: blooms_in_gnome/tray.py:197
+#, fuzzy, python-brace-format
+msgid "Upload failed: all servers unreachable"
+msgstr "上传失败：{error}"
 
+#: blooms_in_gnome/tray.py:216
+#, python-brace-format
 msgid "Upload failed: {error}"
 msgstr "上传失败：{error}"
 
+#: blooms_in_gnome/tray.py:272
 msgid "Blooms in Gnome"
 msgstr "Blooms in Gnome"
+
+#~ msgid "Connected — {count} blob"
+#~ msgstr "已连接 — {count} 个对象"
+
+#~ msgid "Connected — {count} blobs"
+#~ msgstr "已连接 — {count} 个对象"
+
+#~ msgid "Uploaded: {hash}…"
+#~ msgstr "已上传：{hash}…"
 

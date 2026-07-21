@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blooms in Gnome 0.1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/anomalyco/blooms\n"
-"POT-Creation-Date: 2026-07-22 07:01+1000\n"
+"POT-Creation-Date: 2026-07-22 07:23+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,91 +97,108 @@ msgstr ""
 msgid "Add a Nostr relay"
 msgstr ""
 
-#: blooms_in_gnome/fuse_fs.py:162
-#, python-brace-format
-msgid "server: {url}\n"
+#: blooms_in_gnome/fuse_fs.py:176
+msgid "healthy"
 msgstr ""
 
-#: blooms_in_gnome/fuse_fs.py:163
-#, python-brace-format
-msgid "pubkey: {key}\n"
+#: blooms_in_gnome/fuse_fs.py:176
+msgid "unreachable"
 msgstr ""
 
-#: blooms_in_gnome/fuse_fs.py:164
+#: blooms_in_gnome/fuse_fs.py:177
 #, python-brace-format
-msgid "blobs: {count}\n"
+msgid "server: {url}    {status}"
 msgstr ""
 
-#: blooms_in_gnome/fuse_fs.py:165
+#: blooms_in_gnome/fuse_fs.py:178
 #, python-brace-format
-msgid "named: {count}\n"
+msgid "pubkey: {key}"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:81
+#: blooms_in_gnome/fuse_fs.py:179
+#, python-brace-format
+msgid "blobs: {count}"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:180
+#, python-brace-format
+msgid "named: {count}"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:181
+#, python-brace-format
+msgid "servers: {ok}/{total} healthy"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:297 blooms_in_gnome/tray.py:209
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:300 blooms_in_gnome/tray.py:213
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers)"
+msgstr ""
+
+#: blooms_in_gnome/tray.py:83
 msgid "Starting…"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:102
+#: blooms_in_gnome/tray.py:106
 msgid "Not configured"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:111
+#: blooms_in_gnome/tray.py:130
 #, python-brace-format
-msgid "Connected — {count} blob"
+msgid "{ok}/{total} servers healthy — {count} blobs"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:111
-#, python-brace-format
-msgid "Connected — {count} blobs"
-msgstr ""
-
-#: blooms_in_gnome/tray.py:114
+#: blooms_in_gnome/tray.py:133
 msgid "Disconnected"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:120
+#: blooms_in_gnome/tray.py:139
 msgid "Open Folder"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:121
+#: blooms_in_gnome/tray.py:140
 msgid "Upload File…"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:125
+#: blooms_in_gnome/tray.py:144
 msgid "Config"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:127
+#: blooms_in_gnome/tray.py:146
 msgid "Quit"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:143
+#: blooms_in_gnome/tray.py:162
 msgid "Select file to upload to Blossom"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:146
+#: blooms_in_gnome/tray.py:165
 msgid "Cancel"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:147
+#: blooms_in_gnome/tray.py:166
 msgid "Upload"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:168
+#: blooms_in_gnome/tray.py:187
 msgid "Configure keys and servers first"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:177
-#, python-brace-format
-msgid "Uploaded: {hash}…"
+#: blooms_in_gnome/tray.py:197
+msgid "Upload failed: all servers unreachable"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:179
+#: blooms_in_gnome/tray.py:216
 #, python-brace-format
 msgid "Upload failed: {error}"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:235
+#: blooms_in_gnome/tray.py:272
 msgid "Blooms in Gnome"
 msgstr ""
 
