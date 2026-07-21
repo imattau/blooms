@@ -18,6 +18,7 @@ setup(
         "cairosvg>=2.9",
         "websocket-client>=1.6",
         "keyring>=24.0",
+        "reedsolo>=1.7",
     ],
     entry_points={
         "console_scripts": [

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blooms in Gnome 0.1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/anomalyco/blooms\n"
-"POT-Creation-Date: 2026-07-22 07:23+1000\n"
+"POT-Creation-Date: 2026-07-22 07:33+1000\n"
 "PO-Revision-Date: 2026-07-22 07:01+1000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -98,45 +98,55 @@ msgstr ""
 msgid "Add a Nostr relay"
 msgstr ""
 
-#: blooms_in_gnome/fuse_fs.py:176
+#: blooms_in_gnome/fuse_fs.py:180
 msgid "healthy"
 msgstr ""
 
-#: blooms_in_gnome/fuse_fs.py:176
-msgid "unreachable"
-msgstr ""
-
-#: blooms_in_gnome/fuse_fs.py:177
-#, python-brace-format
-msgid "server: {url}    {status}"
-msgstr ""
-
-#: blooms_in_gnome/fuse_fs.py:178
-#, python-brace-format
-msgid "pubkey: {key}"
-msgstr ""
-
-#: blooms_in_gnome/fuse_fs.py:179
-#, python-brace-format
-msgid "blobs: {count}"
-msgstr ""
-
 #: blooms_in_gnome/fuse_fs.py:180
-#, python-brace-format
-msgid "named: {count}"
+msgid "unreachable"
 msgstr ""
 
 #: blooms_in_gnome/fuse_fs.py:181
 #, python-brace-format
+msgid "server: {url}    {status}"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:182
+#, python-brace-format
+msgid "pubkey: {key}"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:183
+#, python-brace-format
+msgid "blobs: {count}"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:184
+#, python-brace-format
+msgid "named: {count}"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:185
+#, python-brace-format
 msgid "servers: {ok}/{total} healthy"
 msgstr ""
 
-#: blooms_in_gnome/fuse_fs.py:297 blooms_in_gnome/tray.py:209
+#: blooms_in_gnome/fuse_fs.py:292 blooms_in_gnome/tray.py:200
 #, python-brace-format
-msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+msgid "Uploaded: {hash}… (shard errors: {e})"
 msgstr ""
 
-#: blooms_in_gnome/fuse_fs.py:300 blooms_in_gnome/tray.py:213
+#: blooms_in_gnome/fuse_fs.py:295 blooms_in_gnome/tray.py:204
+#, python-brace-format
+msgid "Uploaded: {hash}… (sharded {k}+{m})"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:320
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {e})"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:323 blooms_in_gnome/tray.py:222
 #, python-brace-format
 msgid "Uploaded: {hash}… ({ok}/{total} servers)"
 msgstr ""
@@ -190,16 +200,21 @@ msgstr "Envoyer"
 msgid "Configure keys and servers first"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:197
+#: blooms_in_gnome/tray.py:209
 msgid "Upload failed: all servers unreachable"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:216
+#: blooms_in_gnome/tray.py:218
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+msgstr ""
+
+#: blooms_in_gnome/tray.py:225
 #, python-brace-format
 msgid "Upload failed: {error}"
 msgstr ""
 
-#: blooms_in_gnome/tray.py:272
+#: blooms_in_gnome/tray.py:281
 msgid "Blooms in Gnome"
 msgstr ""
 

@@ -191,27 +191,36 @@ class BloomsTray:
             conv = get_conversation_key(nsec, npub)
             encrypted = encrypt(data, conv)
             client = BlossomClient(servers[0], nsec)
-            results, errors = client.upload_all(servers, encrypted)
 
-            if not results:
-                self._send_notify("Blooms", _("Upload failed: all servers unreachable"))
-                return
-
-            first_url = next(iter(results))
-            sha256 = results[first_url]["sha256"]
-            self._last_upload = time.time()
-
-            ok = len(results)
-            total = len(servers)
-            if errors:
-                failed_urls = ", ".join(errors)
-                self._send_notify("Blooms",
-                    _("Uploaded: {hash}\u2026 ({ok}/{total} servers, errors: {failed})").format(
-                        hash=sha256[:16], ok=ok, total=total, failed=failed_urls))
+            if len(servers) > 1:
+                manifest_sha, k, m, errors = client.upload_sharded(servers, encrypted)
+                self._last_upload = time.time()
+                if errors:
+                    self._send_notify("Blooms",
+                        _("Uploaded: {hash}\u2026 (shard errors: {e})").format(
+                            hash=manifest_sha[:16], e=", ".join(errors)[:60]))
+                else:
+                    self._send_notify("Blooms",
+                        _("Uploaded: {hash}\u2026 (sharded {k}+{m})").format(
+                            hash=manifest_sha[:16], k=k, m=m))
             else:
-                self._send_notify("Blooms",
-                    _("Uploaded: {hash}\u2026 ({ok}/{total} servers)").format(
-                        hash=sha256[:16], ok=ok, total=total))
+                results, errors = client.upload_all(servers, encrypted)
+                if not results:
+                    self._send_notify("Blooms", _("Upload failed: all servers unreachable"))
+                    return
+                first_url = next(iter(results))
+                sha256 = results[first_url]["sha256"]
+                self._last_upload = time.time()
+                ok = len(results)
+                total = len(servers)
+                if errors:
+                    self._send_notify("Blooms",
+                        _("Uploaded: {hash}\u2026 ({ok}/{total} servers, errors: {failed})").format(
+                            hash=sha256[:16], ok=ok, total=total, failed=", ".join(errors)))
+                else:
+                    self._send_notify("Blooms",
+                        _("Uploaded: {hash}\u2026 ({ok}/{total} servers)").format(
+                            hash=sha256[:16], ok=ok, total=total))
         except Exception as e:
             self._send_notify("Blooms", _("Upload failed: {error}").format(error=e))
 

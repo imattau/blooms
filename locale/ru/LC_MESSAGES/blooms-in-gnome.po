@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-22 07:23+1000\n"
+"POT-Creation-Date: 2026-07-22 07:33+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -96,45 +96,55 @@ msgstr "Добавить сервер Blossom"
 msgid "Add a Nostr relay"
 msgstr "Добавить реле Nostr"
 
-#: blooms_in_gnome/fuse_fs.py:176
+#: blooms_in_gnome/fuse_fs.py:180
 msgid "healthy"
 msgstr "здоровый"
 
-#: blooms_in_gnome/fuse_fs.py:176
+#: blooms_in_gnome/fuse_fs.py:180
 msgid "unreachable"
 msgstr "недостижимый"
 
-#: blooms_in_gnome/fuse_fs.py:177
+#: blooms_in_gnome/fuse_fs.py:181
 #, fuzzy, python-brace-format
 msgid "server: {url}    {status}"
 msgstr "сервер: {url"
 
-#: blooms_in_gnome/fuse_fs.py:178
+#: blooms_in_gnome/fuse_fs.py:182
 #, fuzzy, python-brace-format
 msgid "pubkey: {key}"
 msgstr "открытый ключ: {key"
 
-#: blooms_in_gnome/fuse_fs.py:179
+#: blooms_in_gnome/fuse_fs.py:183
 #, fuzzy, python-brace-format
 msgid "blobs: {count}"
 msgstr "блобов: {count"
 
-#: blooms_in_gnome/fuse_fs.py:180
+#: blooms_in_gnome/fuse_fs.py:184
 #, fuzzy, python-brace-format
 msgid "named: {count}"
 msgstr "именованных: {count"
 
-#: blooms_in_gnome/fuse_fs.py:181
+#: blooms_in_gnome/fuse_fs.py:185
 #, python-brace-format
 msgid "servers: {ok}/{total} healthy"
 msgstr "серверы: {ok}/{total} исправны"
 
-#: blooms_in_gnome/fuse_fs.py:297 blooms_in_gnome/tray.py:209
-#, python-brace-format
-msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+#: blooms_in_gnome/fuse_fs.py:292 blooms_in_gnome/tray.py:200
+#, fuzzy, python-brace-format
+msgid "Uploaded: {hash}… (shard errors: {e})"
 msgstr "Загружено: {hash}… ({ok}/{total} серверов, ошибки: {failed})"
 
-#: blooms_in_gnome/fuse_fs.py:300 blooms_in_gnome/tray.py:213
+#: blooms_in_gnome/fuse_fs.py:295 blooms_in_gnome/tray.py:204
+#, fuzzy, python-brace-format
+msgid "Uploaded: {hash}… (sharded {k}+{m})"
+msgstr "Загружено: {hash}… ({ok}/{total} серверов)"
+
+#: blooms_in_gnome/fuse_fs.py:320
+#, fuzzy, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {e})"
+msgstr "Загружено: {hash}… ({ok}/{total} серверов, ошибки: {failed})"
+
+#: blooms_in_gnome/fuse_fs.py:323 blooms_in_gnome/tray.py:222
 #, python-brace-format
 msgid "Uploaded: {hash}… ({ok}/{total} servers)"
 msgstr "Загружено: {hash}… ({ok}/{total} серверов)"
@@ -188,17 +198,22 @@ msgstr "Загрузить"
 msgid "Configure keys and servers first"
 msgstr "Сначала настройте ключи и серверы"
 
-#: blooms_in_gnome/tray.py:197
-#, fuzzy, python-brace-format
+#: blooms_in_gnome/tray.py:209
+#, fuzzy
 msgid "Upload failed: all servers unreachable"
 msgstr "Ошибка загрузки: {error}"
 
-#: blooms_in_gnome/tray.py:216
+#: blooms_in_gnome/tray.py:218
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+msgstr "Загружено: {hash}… ({ok}/{total} серверов, ошибки: {failed})"
+
+#: blooms_in_gnome/tray.py:225
 #, python-brace-format
 msgid "Upload failed: {error}"
 msgstr "Ошибка загрузки: {error}"
 
-#: blooms_in_gnome/tray.py:272
+#: blooms_in_gnome/tray.py:281
 msgid "Blooms in Gnome"
 msgstr "Blooms in Gnome"
 

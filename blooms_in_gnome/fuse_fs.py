@@ -150,9 +150,13 @@ class BlossomFS(Operations):
         blob = self._lookup(name)
         if not blob:
             raise FuseOSError(errno.ENOENT)
-        sha256 = blob["sha256"]
+
         try:
-            encrypted = self.client.download_fastest(self.servers, sha256)
+            if blob.get("sharded"):
+                encrypted = self.client.download_sharded(self.servers, blob["sha256"])
+            else:
+                encrypted = self.client.download_fastest(self.servers, blob["sha256"])
+
             if self.conversation_key:
                 decrypted = decrypt(encrypted, self.conversation_key)
             else:
@@ -268,39 +272,56 @@ class BlossomFS(Operations):
             else:
                 encrypted = data
 
-            results, errors = self.client.upload_all(self.servers, encrypted)
+            if len(self.servers) > 1:
+                manifest_sha, k, m, errors = self.client.upload_sharded(
+                    self.servers, encrypted)
+                entry = {
+                    "sha256": manifest_sha,
+                    "sharded": True,
+                    "size": len(data),
+                    "type": "application/octet-stream",
+                    "uploaded": int(time.time()),
+                }
+                with self._lock:
+                    self.names[name] = entry
+                    _save_names(self.names)
 
-            if not results:
-                return
-
-            first_url = next(iter(results))
-            result = results[first_url]
-            sha256 = result["sha256"]
-
-            entry = {
-                "sha256": sha256,
-                "url": result["url"],
-                "type": result.get("type", "application/octet-stream"),
-                "uploaded": result.get("uploaded", int(time.time())),
-                "size": len(data),
-            }
-
-            with self._lock:
-                self.names[name] = entry
-                _save_names(self.names)
-                self.blobs[sha256] = entry
-
-            ok = len(results)
-            total = len(self.servers)
-            if errors:
-                failed_urls = ", ".join(errors)
-                msg = _("Uploaded: {hash}\u2026 ({ok}/{total} servers, errors: {failed})").format(
-                    hash=sha256[:16], ok=ok, total=total, failed=failed_urls)
+                ok = 1
+                total = 1
+                if errors:
+                    self._notify(_("Uploaded: {hash}\u2026 (shard errors: {e})").format(
+                        hash=manifest_sha[:16], e=", ".join(errors)[:60]))
+                else:
+                    self._notify(_("Uploaded: {hash}\u2026 (sharded {k}+{m})").format(
+                        hash=manifest_sha[:16], k=k, m=m))
             else:
-                msg = _("Uploaded: {hash}\u2026 ({ok}/{total} servers)").format(
-                    hash=sha256[:16], ok=ok, total=total)
+                results, errors = self.client.upload_all(self.servers, encrypted)
+                if not results:
+                    return
+                first_url = next(iter(results))
+                result = results[first_url]
+                sha256 = result["sha256"]
 
-            self._notify(msg)
+                entry = {
+                    "sha256": sha256,
+                    "url": result["url"],
+                    "type": result.get("type", "application/octet-stream"),
+                    "uploaded": result.get("uploaded", int(time.time())),
+                    "size": len(data),
+                }
+                with self._lock:
+                    self.names[name] = entry
+                    _save_names(self.names)
+                    self.blobs[sha256] = entry
+
+                ok = len(results)
+                total = len(self.servers)
+                if errors:
+                    self._notify(_("Uploaded: {hash}\u2026 ({ok}/{total} servers, errors: {e})").format(
+                        hash=sha256[:16], ok=ok, total=total, e=", ".join(errors)))
+                else:
+                    self._notify(_("Uploaded: {hash}\u2026 ({ok}/{total} servers)").format(
+                        hash=sha256[:16], ok=ok, total=total))
         except Exception:
             pass
 

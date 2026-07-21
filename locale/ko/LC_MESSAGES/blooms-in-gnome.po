@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-22 07:23+1000\n"
+"POT-Creation-Date: 2026-07-22 07:33+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ko\n"
@@ -96,45 +96,55 @@ msgstr "Blossom 서버 추가"
 msgid "Add a Nostr relay"
 msgstr "Nostr 릴레이 추가"
 
-#: blooms_in_gnome/fuse_fs.py:176
+#: blooms_in_gnome/fuse_fs.py:180
 msgid "healthy"
 msgstr "건강한"
 
-#: blooms_in_gnome/fuse_fs.py:176
+#: blooms_in_gnome/fuse_fs.py:180
 msgid "unreachable"
 msgstr "접근할 수 없음"
 
-#: blooms_in_gnome/fuse_fs.py:177
+#: blooms_in_gnome/fuse_fs.py:181
 #, fuzzy, python-brace-format
 msgid "server: {url}    {status}"
 msgstr "서버: {url"
 
-#: blooms_in_gnome/fuse_fs.py:178
+#: blooms_in_gnome/fuse_fs.py:182
 #, fuzzy, python-brace-format
 msgid "pubkey: {key}"
 msgstr "공개 키: {key"
 
-#: blooms_in_gnome/fuse_fs.py:179
+#: blooms_in_gnome/fuse_fs.py:183
 #, fuzzy, python-brace-format
 msgid "blobs: {count}"
 msgstr "블롭: {count"
 
-#: blooms_in_gnome/fuse_fs.py:180
+#: blooms_in_gnome/fuse_fs.py:184
 #, fuzzy, python-brace-format
 msgid "named: {count}"
 msgstr "이름 지정: {count"
 
-#: blooms_in_gnome/fuse_fs.py:181
+#: blooms_in_gnome/fuse_fs.py:185
 #, python-brace-format
 msgid "servers: {ok}/{total} healthy"
 msgstr "서버: {ok}/{total} 정상"
 
-#: blooms_in_gnome/fuse_fs.py:297 blooms_in_gnome/tray.py:209
-#, python-brace-format
-msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+#: blooms_in_gnome/fuse_fs.py:292 blooms_in_gnome/tray.py:200
+#, fuzzy, python-brace-format
+msgid "Uploaded: {hash}… (shard errors: {e})"
 msgstr "업로드됨: {hash}… ({ok}/{total} 서버, 오류: {failed})"
 
-#: blooms_in_gnome/fuse_fs.py:300 blooms_in_gnome/tray.py:213
+#: blooms_in_gnome/fuse_fs.py:295 blooms_in_gnome/tray.py:204
+#, fuzzy, python-brace-format
+msgid "Uploaded: {hash}… (sharded {k}+{m})"
+msgstr "업로드됨: {hash}… ({ok}/{total} 서버)"
+
+#: blooms_in_gnome/fuse_fs.py:320
+#, fuzzy, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {e})"
+msgstr "업로드됨: {hash}… ({ok}/{total} 서버, 오류: {failed})"
+
+#: blooms_in_gnome/fuse_fs.py:323 blooms_in_gnome/tray.py:222
 #, python-brace-format
 msgid "Uploaded: {hash}… ({ok}/{total} servers)"
 msgstr "업로드됨: {hash}… ({ok}/{total} 서버)"
@@ -188,17 +198,22 @@ msgstr "업로드"
 msgid "Configure keys and servers first"
 msgstr "먼저 키와 서버를 설정하세요"
 
-#: blooms_in_gnome/tray.py:197
-#, fuzzy, python-brace-format
+#: blooms_in_gnome/tray.py:209
+#, fuzzy
 msgid "Upload failed: all servers unreachable"
 msgstr "업로드 실패: {error}"
 
-#: blooms_in_gnome/tray.py:216
+#: blooms_in_gnome/tray.py:218
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+msgstr "업로드됨: {hash}… ({ok}/{total} 서버, 오류: {failed})"
+
+#: blooms_in_gnome/tray.py:225
 #, python-brace-format
 msgid "Upload failed: {error}"
 msgstr "업로드 실패: {error}"
 
-#: blooms_in_gnome/tray.py:272
+#: blooms_in_gnome/tray.py:281
 msgid "Blooms in Gnome"
 msgstr "Blooms in Gnome"
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-22 07:23+1000\n"
+"POT-Creation-Date: 2026-07-22 07:33+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_TW\n"
@@ -96,45 +96,55 @@ msgstr "新增 Blossom 伺服器"
 msgid "Add a Nostr relay"
 msgstr "新增 Nostr 中繼"
 
-#: blooms_in_gnome/fuse_fs.py:176
+#: blooms_in_gnome/fuse_fs.py:180
 msgid "healthy"
 msgstr "健康"
 
-#: blooms_in_gnome/fuse_fs.py:176
+#: blooms_in_gnome/fuse_fs.py:180
 msgid "unreachable"
 msgstr "無法到達的"
 
-#: blooms_in_gnome/fuse_fs.py:177
+#: blooms_in_gnome/fuse_fs.py:181
 #, fuzzy, python-brace-format
 msgid "server: {url}    {status}"
 msgstr "伺服器：{url"
 
-#: blooms_in_gnome/fuse_fs.py:178
+#: blooms_in_gnome/fuse_fs.py:182
 #, fuzzy, python-brace-format
 msgid "pubkey: {key}"
 msgstr "公鑰：{key"
 
-#: blooms_in_gnome/fuse_fs.py:179
+#: blooms_in_gnome/fuse_fs.py:183
 #, fuzzy, python-brace-format
 msgid "blobs: {count}"
 msgstr "物件數：{count"
 
-#: blooms_in_gnome/fuse_fs.py:180
+#: blooms_in_gnome/fuse_fs.py:184
 #, fuzzy, python-brace-format
 msgid "named: {count}"
 msgstr "已命名：{count"
 
-#: blooms_in_gnome/fuse_fs.py:181
+#: blooms_in_gnome/fuse_fs.py:185
 #, python-brace-format
 msgid "servers: {ok}/{total} healthy"
 msgstr "伺服器：{ok}/{total} 健康"
 
-#: blooms_in_gnome/fuse_fs.py:297 blooms_in_gnome/tray.py:209
-#, python-brace-format
-msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+#: blooms_in_gnome/fuse_fs.py:292 blooms_in_gnome/tray.py:200
+#, fuzzy, python-brace-format
+msgid "Uploaded: {hash}… (shard errors: {e})"
 msgstr "已上傳：{hash}…（{ok}/{total} 個伺服器，錯誤：{failed}）"
 
-#: blooms_in_gnome/fuse_fs.py:300 blooms_in_gnome/tray.py:213
+#: blooms_in_gnome/fuse_fs.py:295 blooms_in_gnome/tray.py:204
+#, fuzzy, python-brace-format
+msgid "Uploaded: {hash}… (sharded {k}+{m})"
+msgstr "已上傳：{hash}…（{ok}/{total} 伺服器）"
+
+#: blooms_in_gnome/fuse_fs.py:320
+#, fuzzy, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {e})"
+msgstr "已上傳：{hash}…（{ok}/{total} 個伺服器，錯誤：{failed}）"
+
+#: blooms_in_gnome/fuse_fs.py:323 blooms_in_gnome/tray.py:222
 #, python-brace-format
 msgid "Uploaded: {hash}… ({ok}/{total} servers)"
 msgstr "已上傳：{hash}…（{ok}/{total} 伺服器）"
@@ -188,17 +198,22 @@ msgstr "上傳"
 msgid "Configure keys and servers first"
 msgstr "請先設定金鑰和伺服器"
 
-#: blooms_in_gnome/tray.py:197
-#, fuzzy, python-brace-format
+#: blooms_in_gnome/tray.py:209
+#, fuzzy
 msgid "Upload failed: all servers unreachable"
 msgstr "上傳失敗：{error}"
 
-#: blooms_in_gnome/tray.py:216
+#: blooms_in_gnome/tray.py:218
+#, python-brace-format
+msgid "Uploaded: {hash}… ({ok}/{total} servers, errors: {failed})"
+msgstr "已上傳：{hash}…（{ok}/{total} 個伺服器，錯誤：{failed}）"
+
+#: blooms_in_gnome/tray.py:225
 #, python-brace-format
 msgid "Upload failed: {error}"
 msgstr "上傳失敗：{error}"
 
-#: blooms_in_gnome/tray.py:272
+#: blooms_in_gnome/tray.py:281
 msgid "Blooms in Gnome"
 msgstr "Blooms in Gnome"
 
