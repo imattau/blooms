@@ -1,0 +1,137 @@
+# Translations for blooms-in-gnome - ru
+# Copyright (C) Blooms in Gnome contributors
+# This file is distributed under the same license as the project.
+#
+msgid ""
+msgstr ""
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Current config:"
+msgstr "Текущая конфигурация:"
+
+msgid "(not set)"
+msgstr "(не задано)"
+
+msgid "(defaults)"
+msgstr "(по умолчанию)"
+
+msgid "(stored in keyring)"
+msgstr "(хранится в связке ключей)"
+
+msgid "Config file:"
+msgstr "Файл конфигурации:"
+
+msgid "CLI:"
+msgstr "CLI:"
+
+msgid "nsec saved to keyring"
+msgstr "nsec сохранён в связке ключей"
+
+msgid "npub set to {npub}"
+msgstr "npub установлен в {npub}"
+
+msgid "server added: {url}"
+msgstr "сервер добавлен: {url}"
+
+msgid "relay added: {url}"
+msgstr "реле добавлено: {url}"
+
+msgid "Blooms in Gnome — Blossom FUSE mount"
+msgstr "Blooms in Gnome — Монтирование Blossom FUSE"
+
+msgid "Mount point (default: ~/Blossom)"
+msgstr "Точка монтирования (по умолчанию: ~/Blossom)"
+
+msgid "Show current configuration"
+msgstr "Показать текущую конфигурацию"
+
+msgid "Run FUSE mount in foreground"
+msgstr "Запустить монтирование FUSE на переднем плане"
+
+msgid "Start tray icon (starts FUSE mount automatically)"
+msgstr "Запустить значок в трее (автоматически запускает FUSE)"
+
+msgid "Store nsec in keyring"
+msgstr "Сохранить nsec в связке ключей"
+
+msgid "Set public key"
+msgstr "Установить открытый ключ"
+
+msgid "Add a Blossom server"
+msgstr "Добавить сервер Blossom"
+
+msgid "Add a Nostr relay"
+msgstr "Добавить реле Nostr"
+
+msgid "server: {url}
+"
+msgstr "сервер: {url}
+"
+
+msgid "pubkey: {key}
+"
+msgstr "открытый ключ: {key}
+"
+
+msgid "blobs: {count}
+"
+msgstr "блобов: {count}
+"
+
+msgid "named: {count}
+"
+msgstr "именованных: {count}
+"
+
+msgid "Starting…"
+msgstr "Запуск…"
+
+msgid "Not configured"
+msgstr "Не настроено"
+
+msgid "Connected — {count} blob"
+msgstr "Подключено — {count} блоб"
+
+msgid "Connected — {count} blobs"
+msgstr "Подключено — {count} блобов"
+
+msgid "Disconnected"
+msgstr "Отключено"
+
+msgid "Open Folder"
+msgstr "Открыть папку"
+
+msgid "Upload File…"
+msgstr "Загрузить файл…"
+
+msgid "Config"
+msgstr "Настройки"
+
+msgid "Quit"
+msgstr "Выйти"
+
+msgid "Select file to upload to Blossom"
+msgstr "Выберите файл для загрузки в Blossom"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Upload"
+msgstr "Загрузить"
+
+msgid "Configure keys and servers first"
+msgstr "Сначала настройте ключи и серверы"
+
+msgid "Uploaded: {hash}…"
+msgstr "Загружено: {hash}…"
+
+msgid "Upload failed: {error}"
+msgstr "Ошибка загрузки: {error}"
+
+msgid "Blooms in Gnome"
+msgstr "Blooms in Gnome"
+

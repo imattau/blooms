@@ -1,0 +1,137 @@
+# Translations for blooms-in-gnome - pt_BR
+# Copyright (C) Blooms in Gnome contributors
+# This file is distributed under the same license as the project.
+#
+msgid ""
+msgstr ""
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Current config:"
+msgstr "Configuração atual:"
+
+msgid "(not set)"
+msgstr "(não definido)"
+
+msgid "(defaults)"
+msgstr "(padrões)"
+
+msgid "(stored in keyring)"
+msgstr "(armazenado no chaveiro)"
+
+msgid "Config file:"
+msgstr "Arquivo de configuração:"
+
+msgid "CLI:"
+msgstr "CLI:"
+
+msgid "nsec saved to keyring"
+msgstr "nsec salvo no chaveiro"
+
+msgid "npub set to {npub}"
+msgstr "npub definido como {npub}"
+
+msgid "server added: {url}"
+msgstr "servidor adicionado: {url}"
+
+msgid "relay added: {url}"
+msgstr "relé adicionado: {url}"
+
+msgid "Blooms in Gnome — Blossom FUSE mount"
+msgstr "Blooms in Gnome — Montagem FUSE do Blossom"
+
+msgid "Mount point (default: ~/Blossom)"
+msgstr "Ponto de montagem (padrão: ~/Blossom)"
+
+msgid "Show current configuration"
+msgstr "Mostrar configuração atual"
+
+msgid "Run FUSE mount in foreground"
+msgstr "Executar montagem FUSE em primeiro plano"
+
+msgid "Start tray icon (starts FUSE mount automatically)"
+msgstr "Iniciar ícone da bandeja (inicia montagem FUSE automaticamente)"
+
+msgid "Store nsec in keyring"
+msgstr "Armazenar nsec no chaveiro"
+
+msgid "Set public key"
+msgstr "Definir chave pública"
+
+msgid "Add a Blossom server"
+msgstr "Adicionar um servidor Blossom"
+
+msgid "Add a Nostr relay"
+msgstr "Adicionar um relé Nostr"
+
+msgid "server: {url}
+"
+msgstr "servidor: {url}
+"
+
+msgid "pubkey: {key}
+"
+msgstr "chave pública: {key}
+"
+
+msgid "blobs: {count}
+"
+msgstr "blobs: {count}
+"
+
+msgid "named: {count}
+"
+msgstr "nomeados: {count}
+"
+
+msgid "Starting…"
+msgstr "Iniciando…"
+
+msgid "Not configured"
+msgstr "Não configurado"
+
+msgid "Connected — {count} blob"
+msgstr "Conectado — {count} blob"
+
+msgid "Connected — {count} blobs"
+msgstr "Conectado — {count} blobs"
+
+msgid "Disconnected"
+msgstr "Desconectado"
+
+msgid "Open Folder"
+msgstr "Abrir pasta"
+
+msgid "Upload File…"
+msgstr "Enviar arquivo…"
+
+msgid "Config"
+msgstr "Configuração"
+
+msgid "Quit"
+msgstr "Sair"
+
+msgid "Select file to upload to Blossom"
+msgstr "Selecionar arquivo para enviar ao Blossom"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Upload"
+msgstr "Enviar"
+
+msgid "Configure keys and servers first"
+msgstr "Configure chaves e servidores primeiro"
+
+msgid "Uploaded: {hash}…"
+msgstr "Enviado: {hash}…"
+
+msgid "Upload failed: {error}"
+msgstr "Falha ao enviar: {error}"
+
+msgid "Blooms in Gnome"
+msgstr "Blooms in Gnome"
+

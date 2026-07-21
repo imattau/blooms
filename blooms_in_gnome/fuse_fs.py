@@ -1,0 +1,274 @@
+import errno
+import json
+import os
+import stat
+import threading
+import time
+from pathlib import Path
+
+from fuse import FUSE, FuseOSError, Operations
+
+from . import config as cfg
+from .client import BlossomClient
+from .crypto import get_conversation_key, encrypt, decrypt
+from .i18n import _
+
+NAMES_PATH = cfg.CONFIG_DIR / "names.json"
+MOUNT_ROOT = Path.home() / "Blossom"
+
+
+def _load_names() -> dict:
+    if NAMES_PATH.exists():
+        try:
+            return json.loads(NAMES_PATH.read_text())
+        except (json.JSONDecodeError, OSError):
+            pass
+    return {}
+
+
+def _save_names(names: dict):
+    cfg.CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    NAMES_PATH.write_text(json.dumps(names, indent=2))
+
+
+class BlossomFS(Operations):
+    def __init__(self):
+        self.config = cfg.load()
+        self._lock = threading.Lock()
+        self._next_fd = 1
+
+        servers = self.config.get("servers", [])
+        self.server = servers[0] if servers else ""
+
+        self.nsec = self.config.get("nsec") or None
+        self.npub = self.config.get("npub") or ""
+
+        self.conversation_key = None
+        if self.nsec and self.npub:
+            self.conversation_key = get_conversation_key(self.nsec, self.npub)
+
+        self.client = BlossomClient(self.server, self.nsec)
+
+        self.names = _load_names()
+        self.blobs: dict[str, dict] = {}
+        self._fetch_blobs()
+
+        self.read_buffers: dict[int, bytes] = {}
+        self.write_buffers: dict[int, bytearray] = {}
+        self.write_paths: dict[int, str] = {}
+
+    def _fetch_blobs(self):
+        if not self.server or not self.npub:
+            return
+        try:
+            result = self.client.list_blobs(self.npub)
+            self.blobs = {b["sha256"]: b for b in result}
+        except Exception:
+            self.blobs = {}
+
+    # -- helpers --
+
+    def _sha256_to_name(self, sha256: str) -> str:
+        blob = self.blobs.get(sha256, {})
+        ext = Path(blob.get("url", "")).suffix
+        return f"{sha256[:24]}{ext}"
+
+    def _lookup(self, name: str) -> dict | None:
+        if name in self.names:
+            return self.names[name]
+        for sha256, blob in self.blobs.items():
+            if name == self._sha256_to_name(sha256):
+                return blob
+        return None
+
+    def _all_entries(self) -> list[str]:
+        entries = {".", "..", ".info"}
+        for name in self.names:
+            entries.add(name)
+        named_sha256s = {v["sha256"] for v in self.names.values()}
+        for sha256 in self.blobs:
+            if sha256 not in named_sha256s:
+                entries.add(self._sha256_to_name(sha256))
+        return sorted(entries)
+
+    def _make_attr(self, mode: int, size: int = 0, mtime: float = 0) -> dict:
+        now = time.time()
+        return {
+            "st_mode": mode,
+            "st_size": size,
+            "st_ctime": mtime or now,
+            "st_mtime": mtime or now,
+            "st_atime": now,
+            "st_uid": os.getuid(),
+            "st_gid": os.getgid(),
+        }
+
+    # -- FUSE operations --
+
+    def access(self, path, amode):
+        if path == "/":
+            return
+        if path == "/.info":
+            return
+        blob = self._lookup(path.lstrip("/"))
+        if not blob:
+            raise FuseOSError(errno.ENOENT)
+
+    def getattr(self, path, fh=None):
+        if path == "/":
+            return self._make_attr(stat.S_IFDIR | 0o755, 4096)
+
+        if path == "/.info":
+            return self._make_attr(stat.S_IFREG | 0o444, 1024)
+
+        name = path.lstrip("/")
+        blob = self._lookup(name)
+        if blob:
+            size = blob.get("size", 0)
+            uploaded = blob.get("uploaded", 0)
+            return self._make_attr(stat.S_IFREG | 0o644, size, uploaded)
+
+        raise FuseOSError(errno.ENOENT)
+
+    def readdir(self, path, fh):
+        return self._all_entries()
+
+    def open(self, path, flags):
+        name = path.lstrip("/")
+        blob = self._lookup(name)
+        if not blob:
+            raise FuseOSError(errno.ENOENT)
+        sha256 = blob["sha256"]
+        try:
+            encrypted = self.client.download(sha256)
+            if self.conversation_key:
+                decrypted = decrypt(encrypted, self.conversation_key)
+            else:
+                decrypted = encrypted
+            with self._lock:
+                fd = self._next_fd
+                self._next_fd += 1
+                self.read_buffers[fd] = decrypted
+            return fd
+        except Exception:
+            raise FuseOSError(errno.EIO)
+
+    def read(self, path, size, offset, fh):
+        with self._lock:
+            buf = self.read_buffers.get(fh, self.write_buffers.get(fh))
+        if buf is None:
+            if path == "/.info":
+                info = (
+                    _("server: {url}\n").format(url=self.server) +
+                    _("pubkey: {key}\n").format(key=self.npub) +
+                    _("blobs: {count}\n").format(count=len(self.blobs)) +
+                    _("named: {count}\n").format(count=len(self.names))
+                )
+                return info.encode()[offset : offset + size]
+            return b""
+        return buf[offset : offset + size]
+
+    def release(self, path, fh):
+        with self._lock:
+            self.read_buffers.pop(fh, None)
+            buf = self.write_buffers.pop(fh, None)
+            name = self.write_paths.pop(fh, None)
+        if buf is not None and name:
+            self._upload(name, bytes(buf))
+
+    def create(self, path, mode, fi=None):
+        name = path.lstrip("/")
+        with self._lock:
+            fd = self._next_fd
+            self._next_fd += 1
+            self.write_buffers[fd] = bytearray()
+            self.write_paths[fd] = name
+        return fd
+
+    def write(self, path, data, offset, fh):
+        with self._lock:
+            buf = self.write_buffers.get(fh)
+        if buf is None:
+            raise FuseOSError(errno.EBADF)
+        end = offset + len(data)
+        if end > len(buf):
+            buf.extend(b"\x00" * (end - len(buf)))
+        buf[offset:end] = data
+        return len(data)
+
+    def truncate(self, path, length, fh=None):
+        with self._lock:
+            for buf in self.write_buffers.values():
+                if len(buf) > length:
+                    buf[:] = buf[:length]
+                elif len(buf) < length:
+                    buf.extend(b"\x00" * (length - len(buf)))
+
+    def unlink(self, path):
+        name = path.lstrip("/")
+        blob = self._lookup(name)
+        if not blob:
+            raise FuseOSError(errno.ENOENT)
+        sha256 = blob["sha256"]
+        try:
+            self.client.delete(sha256)
+        except Exception:
+            raise FuseOSError(errno.EIO)
+        with self._lock:
+            self.names.pop(name, None)
+            self.blobs.pop(sha256, None)
+            _save_names(self.names)
+
+    def rename(self, old, new):
+        old_name = old.lstrip("/")
+        new_name = new.lstrip("/")
+        with self._lock:
+            if old_name in self.names:
+                self.names[new_name] = self.names.pop(old_name)
+                _save_names(self.names)
+
+    def statfs(self, path):
+        return {
+            "f_bsize": 4096,
+            "f_frsize": 4096,
+            "f_blocks": 0,
+            "f_bfree": 0,
+            "f_bavail": 0,
+            "f_files": len(self.blobs) + 1000,
+            "f_ffree": 1000,
+        }
+
+    # -- internals --
+
+    def _upload(self, name: str, data: bytes):
+        try:
+            if self.conversation_key:
+                encrypted = encrypt(data, self.conversation_key)
+            else:
+                encrypted = data
+
+            result = self.client.upload(encrypted, "application/octet-stream")
+            sha256 = result["sha256"]
+
+            entry = {
+                "sha256": sha256,
+                "url": result["url"],
+                "type": result.get("type", "application/octet-stream"),
+                "uploaded": result.get("uploaded", int(time.time())),
+                "size": len(data),
+            }
+
+            with self._lock:
+                self.names[name] = entry
+                _save_names(self.names)
+                self.blobs[sha256] = entry
+        except Exception as e:
+            pass
+
+
+def mount(foreground: bool = True):
+    mount_point = os.environ.get("BLOOMS_MOUNT", str(MOUNT_ROOT))
+    os.makedirs(mount_point, exist_ok=True)
+    fs = BlossomFS()
+    print(f"Mounting BlossomFS at {mount_point}")
+    FUSE(fs, mount_point, foreground=foreground, allow_other=False)

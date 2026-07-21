@@ -1,0 +1,137 @@
+# Translations for blooms-in-gnome - vi
+# Copyright (C) Blooms in Gnome contributors
+# This file is distributed under the same license as the project.
+#
+msgid ""
+msgstr ""
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Current config:"
+msgstr "Cấu hình hiện tại:"
+
+msgid "(not set)"
+msgstr "(chưa đặt)"
+
+msgid "(defaults)"
+msgstr "(mặc định)"
+
+msgid "(stored in keyring)"
+msgstr "(được lưu trong chùm khóa)"
+
+msgid "Config file:"
+msgstr "Tệp cấu hình:"
+
+msgid "CLI:"
+msgstr "CLI:"
+
+msgid "nsec saved to keyring"
+msgstr "nsec đã được lưu vào chùm khóa"
+
+msgid "npub set to {npub}"
+msgstr "npub đã được đặt thành {npub}"
+
+msgid "server added: {url}"
+msgstr "máy chủ đã được thêm: {url}"
+
+msgid "relay added: {url}"
+msgstr "rơ-le đã được thêm: {url}"
+
+msgid "Blooms in Gnome — Blossom FUSE mount"
+msgstr "Blooms in Gnome — Gắn kết FUSE Blossom"
+
+msgid "Mount point (default: ~/Blossom)"
+msgstr "Điểm gắn kết (mặc định: ~/Blossom)"
+
+msgid "Show current configuration"
+msgstr "Hiển thị cấu hình hiện tại"
+
+msgid "Run FUSE mount in foreground"
+msgstr "Chạy gắn kết FUSE ở nền trước"
+
+msgid "Start tray icon (starts FUSE mount automatically)"
+msgstr "Khởi động biểu tượng khay (tự động khởi động gắn kết FUSE)"
+
+msgid "Store nsec in keyring"
+msgstr "Lưu nsec vào chùm khóa"
+
+msgid "Set public key"
+msgstr "Đặt khóa công khai"
+
+msgid "Add a Blossom server"
+msgstr "Thêm máy chủ Blossom"
+
+msgid "Add a Nostr relay"
+msgstr "Thêm rơ-le Nostr"
+
+msgid "server: {url}
+"
+msgstr "máy chủ: {url}
+"
+
+msgid "pubkey: {key}
+"
+msgstr "khóa công khai: {key}
+"
+
+msgid "blobs: {count}
+"
+msgstr "blob: {count}
+"
+
+msgid "named: {count}
+"
+msgstr "đã đặt tên: {count}
+"
+
+msgid "Starting…"
+msgstr "Đang khởi động…"
+
+msgid "Not configured"
+msgstr "Chưa được cấu hình"
+
+msgid "Connected — {count} blob"
+msgstr "Đã kết nối — {count} blob"
+
+msgid "Connected — {count} blobs"
+msgstr "Đã kết nối — {count} blob"
+
+msgid "Disconnected"
+msgstr "Đã ngắt kết nối"
+
+msgid "Open Folder"
+msgstr "Mở thư mục"
+
+msgid "Upload File…"
+msgstr "Tải tệp lên…"
+
+msgid "Config"
+msgstr "Cấu hình"
+
+msgid "Quit"
+msgstr "Thoát"
+
+msgid "Select file to upload to Blossom"
+msgstr "Chọn tệp để tải lên Blossom"
+
+msgid "Cancel"
+msgstr "Hủy"
+
+msgid "Upload"
+msgstr "Tải lên"
+
+msgid "Configure keys and servers first"
+msgstr "Vui lòng cấu hình khóa và máy chủ trước"
+
+msgid "Uploaded: {hash}…"
+msgstr "Đã tải lên: {hash}…"
+
+msgid "Upload failed: {error}"
+msgstr "Tải lên thất bại: {error}"
+
+msgid "Blooms in Gnome"
+msgstr "Blooms in Gnome"
+

@@ -1,0 +1,188 @@
+# French translations for Blooms in Gnome.
+# Copyright (C) 2026 Blooms in Gnome contributors
+# This file is distributed under the same license as the Blooms in Gnome
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Blooms in Gnome 0.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/anomalyco/blooms\n"
+"POT-Creation-Date: 2026-07-22 07:01+1000\n"
+"PO-Revision-Date: 2026-07-22 07:01+1000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: blooms_in_gnome/__main__.py:12
+msgid "Current config:"
+msgstr "Configuration actuelle :"
+
+#: blooms_in_gnome/__main__.py:13 blooms_in_gnome/__main__.py:16
+msgid "(not set)"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:14 blooms_in_gnome/__main__.py:15
+msgid "(defaults)"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:16
+msgid "(stored in keyring)"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:18
+msgid "Config file:"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:21
+msgid "CLI:"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:32
+msgid "nsec saved to keyring"
+msgstr "nsec enregistré dans le trousseau"
+
+#: blooms_in_gnome/__main__.py:39
+#, python-brace-format
+msgid "npub set to {npub}"
+msgstr "npub défini à {npub}"
+
+#: blooms_in_gnome/__main__.py:47
+#, python-brace-format
+msgid "server added: {url}"
+msgstr "serveur ajouté : {url}"
+
+#: blooms_in_gnome/__main__.py:55
+#, python-brace-format
+msgid "relay added: {url}"
+msgstr "relais ajouté : {url}"
+
+#: blooms_in_gnome/__main__.py:60
+msgid "Blooms in Gnome — Blossom FUSE mount"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:64
+msgid "Mount point (default: ~/Blossom)"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:68
+msgid "Show current configuration"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:72
+msgid "Run FUSE mount in foreground"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:76
+msgid "Start tray icon (starts FUSE mount automatically)"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:78
+msgid "Store nsec in keyring"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:79
+msgid "Set public key"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:80
+msgid "Add a Blossom server"
+msgstr ""
+
+#: blooms_in_gnome/__main__.py:81
+msgid "Add a Nostr relay"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:162
+#, python-brace-format
+msgid "server: {url}\n"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:163
+#, python-brace-format
+msgid "pubkey: {key}\n"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:164
+#, python-brace-format
+msgid "blobs: {count}\n"
+msgstr ""
+
+#: blooms_in_gnome/fuse_fs.py:165
+#, python-brace-format
+msgid "named: {count}\n"
+msgstr ""
+
+#: blooms_in_gnome/tray.py:81
+msgid "Starting…"
+msgstr "Démarrage…"
+
+#: blooms_in_gnome/tray.py:102
+msgid "Not configured"
+msgstr "Non configuré"
+
+#: blooms_in_gnome/tray.py:111
+#, python-brace-format
+msgid "Connected — {count} blob"
+msgstr "Connecté — {count} objet"
+
+#: blooms_in_gnome/tray.py:111
+#, python-brace-format
+msgid "Connected — {count} blobs"
+msgstr "Connecté — {count} objets"
+
+#: blooms_in_gnome/tray.py:114
+msgid "Disconnected"
+msgstr "Déconnecté"
+
+#: blooms_in_gnome/tray.py:120
+msgid "Open Folder"
+msgstr "Ouvrir le dossier"
+
+#: blooms_in_gnome/tray.py:121
+msgid "Upload File…"
+msgstr "Envoyer un fichier…"
+
+#: blooms_in_gnome/tray.py:125
+msgid "Config"
+msgstr "Configuration"
+
+#: blooms_in_gnome/tray.py:127
+msgid "Quit"
+msgstr "Quitter"
+
+#: blooms_in_gnome/tray.py:143
+msgid "Select file to upload to Blossom"
+msgstr ""
+
+#: blooms_in_gnome/tray.py:146
+msgid "Cancel"
+msgstr "Annuler"
+
+#: blooms_in_gnome/tray.py:147
+msgid "Upload"
+msgstr "Envoyer"
+
+#: blooms_in_gnome/tray.py:168
+msgid "Configure keys and servers first"
+msgstr ""
+
+#: blooms_in_gnome/tray.py:177
+#, python-brace-format
+msgid "Uploaded: {hash}…"
+msgstr ""
+
+#: blooms_in_gnome/tray.py:179
+#, python-brace-format
+msgid "Upload failed: {error}"
+msgstr ""
+
+#: blooms_in_gnome/tray.py:235
+msgid "Blooms in Gnome"
+msgstr ""
+

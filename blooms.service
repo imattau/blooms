@@ -1,0 +1,12 @@
+[Unit]
+Description=Blooms in Gnome — Blossom FUSE mount
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/blooms-mount
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
