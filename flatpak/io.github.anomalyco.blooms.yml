@@ -23,7 +23,7 @@ modules:
     buildsystem: simple
     build-commands:
       - pip3 install --prefix=${FLATPAK_DEST} --no-build-isolation
-        coincurve cairosvg pystray pillow keyring websocket-client
+        coincurve cairosvg pystray pillow keyring websocket-client reedsolo
     sources:
       - type: pip
         packages:
@@ -33,6 +33,7 @@ modules:
           - pillow
           - keyring
           - websocket-client
+          - reedsolo
 
   - name: blooms-in-gnome
     buildsystem: simple

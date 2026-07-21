@@ -23,7 +23,7 @@ jobs:
       - name: Install Python build deps
         run: |
           pip install --break-system-packages coincurve cairosvg pystray \
-            pillow keyring websocket-client fusepy
+            pillow keyring websocket-client fusepy reedsolo
 
       - name: Build .deb
         run: |
@@ -52,7 +52,7 @@ jobs:
       - name: Build Python deps
         run: |
           pip3 install coincurve cairosvg pystray pillow keyring \
-            websocket-client fusepy
+            websocket-client fusepy reedsolo
 
       - name: Build .rpm
         run: |
