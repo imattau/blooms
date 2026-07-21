@@ -1,5 +1,5 @@
-blooms-in-gnome (0.1.0-1) unstable; urgency=medium
+blooms-in-gnome (0.2.0-1) unstable; urgency=medium
 
-  * Initial release.
+  * Minor version bump — sharding, multi-server, i18n, tray, packaging, LGPL.
 
  -- Blooms in Gnome contributors  Wed, 22 Jul 2026 00:00:00 +0000

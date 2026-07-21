@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Blooms in Gnome 0.1.0\n"
+"Project-Id-Version: Blooms in Gnome 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/anomalyco/blooms\n"
 "POT-Creation-Date: 2026-07-22 07:33+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
